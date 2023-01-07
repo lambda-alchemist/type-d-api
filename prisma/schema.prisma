@@ -1,13 +1,13 @@
 
 generator client {
-	provider = "prisma-client-js"
+	provider        = "prisma-client-js"
+	output          = "./client"
 	previewFeatures = ["deno"]
-	output = "./client"
 }
 
 generator dbml {
 	provider = "prisma-dbml-generator"
-	output = "./dbml"
+	output   = "./dbml"
 }
 
 datasource db {
@@ -16,9 +16,22 @@ datasource db {
 }
 
 model User {
-	id         String @id @default(uuid())
+	id         String   @id @default(uuid())
 	username   String
 	email      String
+	passhash   String   @ignore
+	salthash   String   @ignore
+	task       Task[]
 	created_at DateTime @default(now())
 	updated_at DateTime @updatedAt
+}
+
+model Task {
+	id         String   @id @default(uuid())
+	name       String
+	status     Boolean  @default(false)
+	user       User     @relation(fields: [user_id], references: [id])
+	user_id    String
+	updated_at DateTime @updatedAt
+	created_at DateTime @default(now())
 }
