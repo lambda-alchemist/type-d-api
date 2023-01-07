@@ -5,9 +5,19 @@ generator client {
 	previewFeatures = ["deno"]
 }
 
+generator json {
+	provider = "prisma-json-generator"
+	output   = "./json"
+}
+
 generator dbml {
 	provider = "prisma-dbml-generator"
 	output   = "./dbml"
+}
+
+generator docs {
+	provider = "prisma-docs-generator"
+	output   = "./docs"
 }
 
 datasource db {

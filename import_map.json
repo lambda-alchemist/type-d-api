@@ -2,6 +2,6 @@
 	"imports": {
 		"std": "https://deno.land/std@0.171.0",
 		"oak": "https://deno.land/x/oak@v11.1.0/mod.ts",
-		"client": "./prisma/client"
+		"prisma_client": "./prisma/client",
 	}
 }
