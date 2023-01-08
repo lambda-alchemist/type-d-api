@@ -1,7 +1,7 @@
 {
 	"imports": {
-		"std": "https://deno.land/std@0.171.0",
 		"oak": "https://deno.land/x/oak@v11.1.0/mod.ts",
-		"prisma_client": "./prisma/client",
+		"dotenv": "https://deno.land/std@0.171.0/dotenv/mod.ts",
+		"edge_client": "./prisma/client/deno/edge.ts"
 	}
 }
