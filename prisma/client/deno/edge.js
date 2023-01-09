@@ -133,7 +133,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/lambda/code/type-d-api/prisma/client",
+      "value": "/home/alkemist/code/type-d-api/prisma/client",
       "fromEnvVar": null
     },
     "config": {
@@ -146,8 +146,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "..",
   "clientVersion": "4.8.1",
