@@ -4,8 +4,8 @@ import * as hand from "./handler.ts"
 const router = new Router()
 
 router
-	.get("/user", hand.user_list)
-	.post("/user", hand.user_create)
-	.get("/user:id", hand.user_retrieve)
-	.patch("/user/:id", hand.user_update)
-	.delete("/user/:id", hand.user_remove)
+	.get("/user", hand.task_list)
+	.post("/user", hand.task_create)
+	.get("/user:id", hand.task_retrieve)
+	.patch("/user/:id", hand.task_update)
+	.delete("/user/:id", hand.task_remove)

@@ -101,9 +101,9 @@ exports.Prisma.SortOrder = makeEnum({
 
 exports.Prisma.TaskScalarFieldEnum = makeEnum({
   id: 'id',
-  name: 'name',
-  status: 'status',
   user_id: 'user_id',
+  name: 'name',
+  stat: 'stat',
   updated_at: 'updated_at',
   created_at: 'created_at'
 });
@@ -119,8 +119,8 @@ exports.Prisma.UserScalarFieldEnum = makeEnum({
   id: 'id',
   username: 'username',
   email: 'email',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  created_at: 'created_at'
 });
 
 

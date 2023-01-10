@@ -20,8 +20,8 @@ export type User = {
   id: string
   username: string
   email: string
-  created_at: Date
   updated_at: Date
+  created_at: Date
 }
 
 /**
@@ -30,9 +30,9 @@ export type User = {
  */
 export type Task = {
   id: string
-  name: string
-  status: boolean
   user_id: string
+  name: string
+  stat: boolean
   updated_at: Date
   created_at: Date
 }
@@ -887,24 +887,24 @@ export namespace Prisma {
     id: string | null
     username: string | null
     email: string | null
-    created_at: Date | null
     updated_at: Date | null
+    created_at: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: string | null
     username: string | null
     email: string | null
-    created_at: Date | null
     updated_at: Date | null
+    created_at: Date | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
     username: number
     email: number
-    created_at: number
     updated_at: number
+    created_at: number
     _all: number
   }
 
@@ -913,24 +913,24 @@ export namespace Prisma {
     id?: true
     username?: true
     email?: true
-    created_at?: true
     updated_at?: true
+    created_at?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
     username?: true
     email?: true
-    created_at?: true
     updated_at?: true
+    created_at?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
     username?: true
     email?: true
-    created_at?: true
     updated_at?: true
+    created_at?: true
     _all?: true
   }
 
@@ -1016,8 +1016,8 @@ export namespace Prisma {
     id: string
     username: string
     email: string
-    created_at: Date
     updated_at: Date
+    created_at: Date
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1041,8 +1041,8 @@ export namespace Prisma {
     id?: boolean
     username?: boolean
     email?: boolean
-    created_at?: boolean
     updated_at?: boolean
+    created_at?: boolean
     task?: boolean | User$taskArgs
     _count?: boolean | UserCountOutputTypeArgs
   }
@@ -1166,6 +1166,38 @@ export namespace Prisma {
     ): PrismaPromise<Array<UserGetPayload<T>>>
 
     /**
+     * Create a User.
+     * @param {UserCreateArgs} args - Arguments to create a User.
+     * @example
+     * // Create one User
+     * const User = await prisma.user.create({
+     *   data: {
+     *     // ... data to create a User
+     *   }
+     * })
+     * 
+    **/
+    create<T extends UserCreateArgs>(
+      args: SelectSubset<T, UserCreateArgs>
+    ): Prisma__UserClient<UserGetPayload<T>>
+
+    /**
+     * Create many Users.
+     *     @param {UserCreateManyArgs} args - Arguments to create many Users.
+     *     @example
+     *     // Create many Users
+     *     const user = await prisma.user.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends UserCreateManyArgs>(
+      args?: SelectSubset<T, UserCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
      * Delete a User.
      * @param {UserDeleteArgs} args - Arguments to delete one User.
      * @example
@@ -1236,6 +1268,27 @@ export namespace Prisma {
     updateMany<T extends UserUpdateManyArgs>(
       args: SelectSubset<T, UserUpdateManyArgs>
     ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one User.
+     * @param {UserUpsertArgs} args - Arguments to update or create a User.
+     * @example
+     * // Update or create a User
+     * const user = await prisma.user.upsert({
+     *   create: {
+     *     // ... data to create a User
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the User we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends UserUpsertArgs>(
+      args: SelectSubset<T, UserUpsertArgs>
+    ): Prisma__UserClient<UserGetPayload<T>>
 
     /**
      * Count the number of Users.
@@ -1649,6 +1702,41 @@ export namespace Prisma {
 
 
   /**
+   * User create
+   */
+  export type UserCreateArgs = {
+    /**
+     * Select specific fields to fetch from the User
+     * 
+    **/
+    select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInclude | null
+    /**
+     * The data needed to create a User.
+     * 
+    **/
+    data: XOR<UserCreateInput, UserUncheckedCreateInput>
+  }
+
+
+  /**
+   * User createMany
+   */
+  export type UserCreateManyArgs = {
+    /**
+     * The data used to create many Users.
+     * 
+    **/
+    data: Enumerable<UserCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
    * User update
    */
   export type UserUpdateArgs = {
@@ -1689,6 +1777,38 @@ export namespace Prisma {
      * 
     **/
     where?: UserWhereInput
+  }
+
+
+  /**
+   * User upsert
+   */
+  export type UserUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the User
+     * 
+    **/
+    select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInclude | null
+    /**
+     * The filter to search for the User to update in case it exists.
+     * 
+    **/
+    where: UserWhereUniqueInput
+    /**
+     * In case the User found by the `where` argument doesn't exist, create a new User with this data.
+     * 
+    **/
+    create: XOR<UserCreateInput, UserUncheckedCreateInput>
+    /**
+     * In case the User was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<UserUpdateInput, UserUncheckedUpdateInput>
   }
 
 
@@ -1780,27 +1900,27 @@ export namespace Prisma {
 
   export type TaskMinAggregateOutputType = {
     id: string | null
-    name: string | null
-    status: boolean | null
     user_id: string | null
+    name: string | null
+    stat: boolean | null
     updated_at: Date | null
     created_at: Date | null
   }
 
   export type TaskMaxAggregateOutputType = {
     id: string | null
-    name: string | null
-    status: boolean | null
     user_id: string | null
+    name: string | null
+    stat: boolean | null
     updated_at: Date | null
     created_at: Date | null
   }
 
   export type TaskCountAggregateOutputType = {
     id: number
-    name: number
-    status: number
     user_id: number
+    name: number
+    stat: number
     updated_at: number
     created_at: number
     _all: number
@@ -1809,27 +1929,27 @@ export namespace Prisma {
 
   export type TaskMinAggregateInputType = {
     id?: true
-    name?: true
-    status?: true
     user_id?: true
+    name?: true
+    stat?: true
     updated_at?: true
     created_at?: true
   }
 
   export type TaskMaxAggregateInputType = {
     id?: true
-    name?: true
-    status?: true
     user_id?: true
+    name?: true
+    stat?: true
     updated_at?: true
     created_at?: true
   }
 
   export type TaskCountAggregateInputType = {
     id?: true
-    name?: true
-    status?: true
     user_id?: true
+    name?: true
+    stat?: true
     updated_at?: true
     created_at?: true
     _all?: true
@@ -1915,9 +2035,9 @@ export namespace Prisma {
 
   export type TaskGroupByOutputType = {
     id: string
-    name: string
-    status: boolean
     user_id: string
+    name: string
+    stat: boolean
     updated_at: Date
     created_at: Date
     _count: TaskCountAggregateOutputType | null
@@ -1941,9 +2061,9 @@ export namespace Prisma {
 
   export type TaskSelect = {
     id?: boolean
-    name?: boolean
-    status?: boolean
     user_id?: boolean
+    name?: boolean
+    stat?: boolean
     updated_at?: boolean
     created_at?: boolean
     user?: boolean | UserArgs
@@ -2788,9 +2908,9 @@ export namespace Prisma {
 
   export const TaskScalarFieldEnum: {
     id: 'id',
-    name: 'name',
-    status: 'status',
     user_id: 'user_id',
+    name: 'name',
+    stat: 'stat',
     updated_at: 'updated_at',
     created_at: 'created_at'
   };
@@ -2812,8 +2932,8 @@ export namespace Prisma {
     id: 'id',
     username: 'username',
     email: 'email',
-    created_at: 'created_at',
-    updated_at: 'updated_at'
+    updated_at: 'updated_at',
+    created_at: 'created_at'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -2828,11 +2948,11 @@ export namespace Prisma {
     AND?: Enumerable<UserWhereInput>
     OR?: Enumerable<UserWhereInput>
     NOT?: Enumerable<UserWhereInput>
-    id?: StringFilter | string
+    id?: UuidFilter | string
     username?: StringFilter | string
     email?: StringFilter | string
-    created_at?: DateTimeFilter | Date | string
     updated_at?: DateTimeFilter | Date | string
+    created_at?: DateTimeFilter | Date | string
     task?: TaskListRelationFilter
   }
 
@@ -2840,8 +2960,8 @@ export namespace Prisma {
     id?: SortOrder
     username?: SortOrder
     email?: SortOrder
-    created_at?: SortOrder
     updated_at?: SortOrder
+    created_at?: SortOrder
     task?: TaskOrderByRelationAggregateInput
   }
 
@@ -2853,8 +2973,8 @@ export namespace Prisma {
     id?: SortOrder
     username?: SortOrder
     email?: SortOrder
-    created_at?: SortOrder
     updated_at?: SortOrder
+    created_at?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -2864,21 +2984,21 @@ export namespace Prisma {
     AND?: Enumerable<UserScalarWhereWithAggregatesInput>
     OR?: Enumerable<UserScalarWhereWithAggregatesInput>
     NOT?: Enumerable<UserScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
+    id?: UuidWithAggregatesFilter | string
     username?: StringWithAggregatesFilter | string
     email?: StringWithAggregatesFilter | string
-    created_at?: DateTimeWithAggregatesFilter | Date | string
     updated_at?: DateTimeWithAggregatesFilter | Date | string
+    created_at?: DateTimeWithAggregatesFilter | Date | string
   }
 
   export type TaskWhereInput = {
     AND?: Enumerable<TaskWhereInput>
     OR?: Enumerable<TaskWhereInput>
     NOT?: Enumerable<TaskWhereInput>
-    id?: StringFilter | string
+    id?: UuidFilter | string
+    user_id?: UuidFilter | string
     name?: StringFilter | string
-    status?: BoolFilter | boolean
-    user_id?: StringFilter | string
+    stat?: BoolFilter | boolean
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
     user?: XOR<UserRelationFilter, UserWhereInput>
@@ -2886,9 +3006,9 @@ export namespace Prisma {
 
   export type TaskOrderByWithRelationInput = {
     id?: SortOrder
-    name?: SortOrder
-    status?: SortOrder
     user_id?: SortOrder
+    name?: SortOrder
+    stat?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -2900,9 +3020,9 @@ export namespace Prisma {
 
   export type TaskOrderByWithAggregationInput = {
     id?: SortOrder
-    name?: SortOrder
-    status?: SortOrder
     user_id?: SortOrder
+    name?: SortOrder
+    stat?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
     _count?: TaskCountOrderByAggregateInput
@@ -2914,20 +3034,38 @@ export namespace Prisma {
     AND?: Enumerable<TaskScalarWhereWithAggregatesInput>
     OR?: Enumerable<TaskScalarWhereWithAggregatesInput>
     NOT?: Enumerable<TaskScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
+    id?: UuidWithAggregatesFilter | string
+    user_id?: UuidWithAggregatesFilter | string
     name?: StringWithAggregatesFilter | string
-    status?: BoolWithAggregatesFilter | boolean
-    user_id?: StringWithAggregatesFilter | string
+    stat?: BoolWithAggregatesFilter | boolean
     updated_at?: DateTimeWithAggregatesFilter | Date | string
     created_at?: DateTimeWithAggregatesFilter | Date | string
+  }
+
+  export type UserCreateInput = {
+    id: string
+    username: string
+    email: string
+    updated_at?: Date | string
+    created_at?: Date | string
+    task?: TaskCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateInput = {
+    id: string
+    username: string
+    email: string
+    updated_at?: Date | string
+    created_at?: Date | string
+    task?: TaskUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: TaskUpdateManyWithoutUserNestedInput
   }
 
@@ -2935,41 +3073,49 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: TaskUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateManyInput = {
+    id: string
+    username: string
+    email: string
+    updated_at?: Date | string
+    created_at?: Date | string
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TaskCreateInput = {
-    id?: string
+    id: string
     name: string
-    status?: boolean
+    stat?: boolean
     updated_at?: Date | string
     created_at?: Date | string
     user: UserCreateNestedOneWithoutTaskInput
   }
 
   export type TaskUncheckedCreateInput = {
-    id?: string
-    name: string
-    status?: boolean
+    id: string
     user_id: string
+    name: string
+    stat?: boolean
     updated_at?: Date | string
     created_at?: Date | string
   }
@@ -2977,7 +3123,7 @@ export namespace Prisma {
   export type TaskUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    status?: BoolFieldUpdateOperationsInput | boolean
+    stat?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTaskNestedInput
@@ -2985,18 +3131,18 @@ export namespace Prisma {
 
   export type TaskUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    status?: BoolFieldUpdateOperationsInput | boolean
     user_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    stat?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TaskCreateManyInput = {
-    id?: string
-    name: string
-    status?: boolean
+    id: string
     user_id: string
+    name: string
+    stat?: boolean
     updated_at?: Date | string
     created_at?: Date | string
   }
@@ -3004,18 +3150,30 @@ export namespace Prisma {
   export type TaskUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    status?: BoolFieldUpdateOperationsInput | boolean
+    stat?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TaskUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    status?: BoolFieldUpdateOperationsInput | boolean
     user_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    stat?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UuidFilter = {
+    equals?: string
+    in?: Enumerable<string>
+    notIn?: Enumerable<string>
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    mode?: QueryMode
+    not?: NestedUuidFilter | string
   }
 
   export type StringFilter = {
@@ -3058,24 +3216,39 @@ export namespace Prisma {
     id?: SortOrder
     username?: SortOrder
     email?: SortOrder
-    created_at?: SortOrder
     updated_at?: SortOrder
+    created_at?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     username?: SortOrder
     email?: SortOrder
-    created_at?: SortOrder
     updated_at?: SortOrder
+    created_at?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
     username?: SortOrder
     email?: SortOrder
-    created_at?: SortOrder
     updated_at?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type UuidWithAggregatesFilter = {
+    equals?: string
+    in?: Enumerable<string>
+    notIn?: Enumerable<string>
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    mode?: QueryMode
+    not?: NestedUuidWithAggregatesFilter | string
+    _count?: NestedIntFilter
+    _min?: NestedStringFilter
+    _max?: NestedStringFilter
   }
 
   export type StringWithAggregatesFilter = {
@@ -3122,27 +3295,27 @@ export namespace Prisma {
 
   export type TaskCountOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
-    status?: SortOrder
     user_id?: SortOrder
+    name?: SortOrder
+    stat?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
   }
 
   export type TaskMaxOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
-    status?: SortOrder
     user_id?: SortOrder
+    name?: SortOrder
+    stat?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
   }
 
   export type TaskMinOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
-    status?: SortOrder
     user_id?: SortOrder
+    name?: SortOrder
+    stat?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
   }
@@ -3153,6 +3326,20 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedBoolFilter
     _max?: NestedBoolFilter
+  }
+
+  export type TaskCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<TaskCreateWithoutUserInput>, Enumerable<TaskUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<TaskCreateOrConnectWithoutUserInput>
+    createMany?: TaskCreateManyUserInputEnvelope
+    connect?: Enumerable<TaskWhereUniqueInput>
+  }
+
+  export type TaskUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<TaskCreateWithoutUserInput>, Enumerable<TaskUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<TaskCreateOrConnectWithoutUserInput>
+    createMany?: TaskCreateManyUserInputEnvelope
+    connect?: Enumerable<TaskWhereUniqueInput>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -3192,6 +3379,8 @@ export namespace Prisma {
   }
 
   export type UserCreateNestedOneWithoutTaskInput = {
+    create?: XOR<UserCreateWithoutTaskInput, UserUncheckedCreateWithoutTaskInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTaskInput
     connect?: UserWhereUniqueInput
   }
 
@@ -3200,8 +3389,22 @@ export namespace Prisma {
   }
 
   export type UserUpdateOneRequiredWithoutTaskNestedInput = {
+    create?: XOR<UserCreateWithoutTaskInput, UserUncheckedCreateWithoutTaskInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTaskInput
+    upsert?: UserUpsertWithoutTaskInput
     connect?: UserWhereUniqueInput
     update?: XOR<UserUpdateWithoutTaskInput, UserUncheckedUpdateWithoutTaskInput>
+  }
+
+  export type NestedUuidFilter = {
+    equals?: string
+    in?: Enumerable<string>
+    notIn?: Enumerable<string>
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    not?: NestedUuidFilter | string
   }
 
   export type NestedStringFilter = {
@@ -3229,6 +3432,31 @@ export namespace Prisma {
     not?: NestedDateTimeFilter | Date | string
   }
 
+  export type NestedUuidWithAggregatesFilter = {
+    equals?: string
+    in?: Enumerable<string>
+    notIn?: Enumerable<string>
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    not?: NestedUuidWithAggregatesFilter | string
+    _count?: NestedIntFilter
+    _min?: NestedStringFilter
+    _max?: NestedStringFilter
+  }
+
+  export type NestedIntFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntFilter | number
+  }
+
   export type NestedStringWithAggregatesFilter = {
     equals?: string
     in?: Enumerable<string>
@@ -3244,17 +3472,6 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedStringFilter
     _max?: NestedStringFilter
-  }
-
-  export type NestedIntFilter = {
-    equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntFilter | number
   }
 
   export type NestedDateTimeWithAggregatesFilter = {
@@ -3285,17 +3502,17 @@ export namespace Prisma {
   }
 
   export type TaskCreateWithoutUserInput = {
-    id?: string
+    id: string
     name: string
-    status?: boolean
+    stat?: boolean
     updated_at?: Date | string
     created_at?: Date | string
   }
 
   export type TaskUncheckedCreateWithoutUserInput = {
-    id?: string
+    id: string
     name: string
-    status?: boolean
+    stat?: boolean
     updated_at?: Date | string
     created_at?: Date | string
   }
@@ -3305,15 +3522,15 @@ export namespace Prisma {
     create: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput>
   }
 
+  export type TaskCreateManyUserInputEnvelope = {
+    data: Enumerable<TaskCreateManyUserInput>
+    skipDuplicates?: boolean
+  }
+
   export type TaskUpsertWithWhereUniqueWithoutUserInput = {
     where: TaskWhereUniqueInput
     update: XOR<TaskUpdateWithoutUserInput, TaskUncheckedUpdateWithoutUserInput>
     create: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput>
-  }
-
-  export type TaskCreateManyUserInputEnvelope = {
-    data: Enumerable<TaskCreateManyUserInput>
-    skipDuplicates?: boolean
   }
 
   export type TaskUpdateWithWhereUniqueWithoutUserInput = {
@@ -3330,34 +3547,68 @@ export namespace Prisma {
     AND?: Enumerable<TaskScalarWhereInput>
     OR?: Enumerable<TaskScalarWhereInput>
     NOT?: Enumerable<TaskScalarWhereInput>
-    id?: StringFilter | string
+    id?: UuidFilter | string
+    user_id?: UuidFilter | string
     name?: StringFilter | string
-    status?: BoolFilter | boolean
-    user_id?: StringFilter | string
+    stat?: BoolFilter | boolean
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
+  }
+
+  export type UserCreateWithoutTaskInput = {
+    id: string
+    username: string
+    email: string
+    updated_at?: Date | string
+    created_at?: Date | string
+  }
+
+  export type UserUncheckedCreateWithoutTaskInput = {
+    id: string
+    username: string
+    email: string
+    updated_at?: Date | string
+    created_at?: Date | string
+  }
+
+  export type UserCreateOrConnectWithoutTaskInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTaskInput, UserUncheckedCreateWithoutTaskInput>
+  }
+
+  export type UserUpsertWithoutTaskInput = {
+    update: XOR<UserUpdateWithoutTaskInput, UserUncheckedUpdateWithoutTaskInput>
+    create: XOR<UserCreateWithoutTaskInput, UserUncheckedCreateWithoutTaskInput>
   }
 
   export type UserUpdateWithoutTaskInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateWithoutTaskInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskCreateManyUserInput = {
+    id: string
+    name: string
+    stat?: boolean
+    updated_at?: Date | string
+    created_at?: Date | string
   }
 
   export type TaskUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    status?: BoolFieldUpdateOperationsInput | boolean
+    stat?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3365,23 +3616,15 @@ export namespace Prisma {
   export type TaskUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    status?: BoolFieldUpdateOperationsInput | boolean
+    stat?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TaskCreateManyUserInput = {
-    id?: string
-    name: string
-    status?: boolean
-    updated_at?: Date | string
-    created_at?: Date | string
   }
 
   export type TaskUncheckedUpdateManyWithoutTaskInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    status?: BoolFieldUpdateOperationsInput | boolean
+    stat?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -7,26 +7,24 @@ generator client {
 
 datasource db {
 	provider = "postgresql"
-	url      = env("DATABASE_URL")
+	url      = env("SUPABASE_URL")
 }
 
 model User {
-	id         String   @id @default(uuid())
-	username   String
-	email      String
-	passhash   String   @ignore
-	salthash   String   @ignore
+	id         String   @db.Uuid @id
+	username   String   @db.VarChar(64)
+	email      String   @db.VarChar(96)
+	updated_at DateTime @default(now()) @updatedAt
 	created_at DateTime @default(now())
-	updated_at DateTime @updatedAt
 	task       Task[]
 }
 
 model Task {
-	id         String   @id @default(uuid())
-	name       String
-	status     Boolean  @default(false)
-	user_id    String
-	updated_at DateTime @updatedAt
+	id         String   @db.Uuid @id
+	user_id    String   @db.Uuid
+	name       String   @db.VarChar(96)
+	stat       Boolean  @default(false)
+	updated_at DateTime @default(now()) @updatedAt
 	created_at DateTime @default(now())
 	user       User     @relation(fields: [user_id], references: [id])
 }
