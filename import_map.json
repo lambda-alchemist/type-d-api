@@ -2,9 +2,11 @@
 	"imports": {
 		"edge_client": "./prisma/client/deno/edge.ts",
 		"dotenv": "https://deno.land/std@v0.171.0/dotenv/mod.ts",
-		"djwt": "https://deno.land/x/djwt@v2.8/mod.ts",
+		"uuid": "https://deno.land/std@v0.171.0/uuid/mod.ts",
+		"supabase": "https://esm.sh/@supabase/supabase-js@2",
 		"oak": "https://deno.land/x/oak@v11.1.0/mod.ts",
-		"bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts"
+		"bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
+		"djwt": "https://deno.land/x/djwt@v2.8/mod.ts"
 	},
 	"scopes": {}
 }

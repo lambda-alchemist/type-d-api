@@ -13,8 +13,9 @@ datasource db {
 model User {
 	id         String   @db.Uuid @id
 	username   String   @db.VarChar(64)
-	email      String   @db.VarChar(96)
-	updated_at DateTime @default(now()) @updatedAt
+	email      String   @db.VarChar(96) @unique
+	password   String
+  updated_at DateTime @default(now()) @updatedAt
 	created_at DateTime @default(now())
 	task       Task[]
 }
