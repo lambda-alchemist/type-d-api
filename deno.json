@@ -1,7 +1,10 @@
 {
 	"importMap": "import_map.json",
 	"lock": true,
-	"fmt": {
+	"test":  { "files": { "include": ["src/"]}},
+	"bench": { "files": { "include": ["src/"]}},
+	"lint":  { "files": { "include": ["src/"]}},
+	"fmt":   { "files": { "include": ["src/"]},
 		"options": {
 			"indentWidth": 4,
 			"lineWidth": 80,
@@ -9,6 +12,9 @@
 			"singleQuote": false,
 			"useTabs": true
 		}
+	},
+	"compilerOptions": {
+		
 	},
 	"tasks": {
 		"esm:add": "deno run -A https://esm.sh/v102 add",
