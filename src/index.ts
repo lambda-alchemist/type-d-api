@@ -4,7 +4,7 @@ import { yellow, green } from "std:color";
 const router = new Router();
 const app = new Application();
 
-const secure = true;
+const secure = false	;
 const hostname = 'localhost';
 const port = 8800;
 
@@ -16,6 +16,7 @@ type listen = {
 
 router
 	.get("/", (context: Context) => context.response.body = "Welcome to the type-d-api")
+	.get
 
 app.use(router.routes());
 app.use(router.allowedMethods());
