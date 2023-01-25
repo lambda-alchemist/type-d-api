@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from "edge_client";
-import { loadSync } from "dotenv";
-import { hashSync } from "bcrypt";
+import { loadSync } from "std:dotenv";
+import { hashSync } from "land:bcrypt";
 
 const env = loadSync();
 const prisma = new PrismaClient({ datasources:{ db:{ url: env.PRISMA_URL}}});

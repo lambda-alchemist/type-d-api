@@ -2,15 +2,12 @@
 	"imports": {
 		"land:bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
 		"land:djwt": "https://deno.land/x/djwt@v2.8/mod.ts",
+		"land:denodb": "https://deno.land/x/denodb@v",
 		"land:oak": "https://deno.land/x/oak@v11.1.0/mod.ts",
 		"land:oak_status": "https://deno.land/x/oak_commmons@v0.3.1/status.ts",
 
 		"std:dotenv": "https://deno.land/std@v0.171.0/dotenv/mod.ts",
 		"std:uuid": "https://deno.land/std@v0.171.0/uuid/mod.ts",
-		"std:color": "https://deno.land/std@v0.171.0/fmt/colors.ts",
-
-		"supabase": "https://esm.sh/@supabase/supabase-js",
-
-		"edge_client": "./prisma/client/deno/edge.ts"
+		"std:color": "https://deno.land/std@v0.171.0/fmt/colors.ts"
 	}
 }
