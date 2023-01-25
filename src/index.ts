@@ -26,4 +26,5 @@ app.addEventListener("listen", ({ secure, hostname, port }: listen) => {
 	const url = `${protocol}${hostname ?? "localhost"}:${port}`;
 	console.log(`${yellow("Listening on:")} ${green(url)}`);
 });
+
 await app.listen(localhost);

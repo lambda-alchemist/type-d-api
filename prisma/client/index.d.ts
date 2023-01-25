@@ -5,7 +5,7 @@
 
 import * as runtime from './runtime/index';
 declare const prisma: unique symbol
-export type PrismaPromise<A> = Promise<A> & {[prisma]: true}
+export interface PrismaPromise<A> extends Promise<A> {[prisma]: true}
 type UnwrapPromise<P extends any> = P extends Promise<infer R> ? R : P
 type UnwrapTuple<Tuple extends readonly unknown[]> = {
   [K in keyof Tuple]: K extends `${number}` ? Tuple[K] extends PrismaPromise<infer X> ? X : UnwrapPromise<Tuple[K]> : UnwrapPromise<Tuple[K]>
@@ -152,9 +152,9 @@ export class PrismaClient<
    * 
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
-  $transaction<P extends PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<UnwrapTuple<P>>;
+  $transaction<P extends PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<UnwrapTuple<P>>
 
-  $transaction<R>(fn: (prisma: Prisma.TransactionClient) => Promise<R>, options?: {maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel}): Promise<R>;
+  $transaction<R>(fn: (prisma: Prisma.TransactionClient) => Promise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<R>
 
       /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -216,8 +216,8 @@ export namespace Prisma {
 
 
   /**
-   * Prisma Client JS version: 4.8.1
-   * Query Engine version: d6e67a83f971b175a593ccc12e15c4a757f93ffe
+   * Prisma Client JS version: 4.9.0
+   * Query Engine version: ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5
    */
   export type PrismaVersion = {
     client: string
@@ -581,19 +581,11 @@ export namespace Prisma {
 
   export type Keys<U extends Union> = U extends unknown ? keyof U : never
 
-  type Exact<A, W = unknown> = 
-  W extends unknown ? A extends Narrowable ? Cast<A, W> : Cast<
-  {[K in keyof A]: K extends keyof W ? Exact<A[K], W[K]> : never},
-  {[K in keyof W]: K extends keyof A ? Exact<A[K], W[K]> : W[K]}>
-  : never;
-
-  type Narrowable = string | number | boolean | bigint;
-
   type Cast<A, B> = A extends B ? A : B;
 
   export const type: unique symbol;
 
-  export function validator<V>(): <S>(select: Exact<S, V>) => S;
+  export function validator<V>(): <S>(select: runtime.Types.Utils.LegacyExact<S, V>) => S;
 
   /**
    * Used by group by
@@ -862,8 +854,7 @@ export namespace Prisma {
   export type UserCountOutputTypeArgs = {
     /**
      * Select specific fields to fetch from the UserCountOutputType
-     * 
-    **/
+     */
     select?: UserCountOutputTypeSelect | null
   }
 
@@ -944,36 +935,31 @@ export namespace Prisma {
   export type UserAggregateArgs = {
     /**
      * Filter which User to aggregate.
-     * 
-    **/
+     */
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Users to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<UserOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
-     * 
-    **/
+     */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Users from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Users.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
@@ -1009,7 +995,7 @@ export namespace Prisma {
   export type UserGroupByArgs = {
     where?: UserWhereInput
     orderBy?: Enumerable<UserOrderByWithAggregationInput>
-    by: Array<UserScalarFieldEnum>
+    by: UserScalarFieldEnum[]
     having?: UserScalarWhereWithAggregatesInput
     take?: number
     skip?: number
@@ -1060,7 +1046,7 @@ export namespace Prisma {
   export type UserInclude = {
     task?: boolean | User$taskArgs
     _count?: boolean | UserCountOutputTypeArgs
-  } 
+  }
 
   export type UserGetPayload<S extends boolean | null | undefined | UserArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
@@ -1081,13 +1067,13 @@ export namespace Prisma {
       : User
 
 
-  type UserCountArgs = Merge<
+  type UserCountArgs = 
     Omit<UserFindManyArgs, 'select' | 'include'> & {
       select?: UserCountAggregateInputType | true
     }
-  >
 
   export interface UserDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
     /**
      * Find zero or one User that matches the filter.
      * @param {UserFindUniqueArgs} args - Arguments to find a User
@@ -1189,22 +1175,6 @@ export namespace Prisma {
     create<T extends UserCreateArgs>(
       args: SelectSubset<T, UserCreateArgs>
     ): Prisma__UserClient<UserGetPayload<T>>
-
-    /**
-     * Create many Users.
-     *     @param {UserCreateManyArgs} args - Arguments to create many Users.
-     *     @example
-     *     // Create many Users
-     *     const user = await prisma.user.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends UserCreateManyArgs>(
-      args?: SelectSubset<T, UserCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
 
     /**
      * Delete a User.
@@ -1485,18 +1455,15 @@ export namespace Prisma {
   export type UserFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * Filter, which User to fetch.
-     * 
-    **/
+     */
     where: UserWhereUniqueInput
   }
 
@@ -1518,18 +1485,15 @@ export namespace Prisma {
   export type UserFindUniqueOrThrowArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * Filter, which User to fetch.
-     * 
-    **/
+     */
     where: UserWhereUniqueInput
   }
 
@@ -1540,53 +1504,45 @@ export namespace Prisma {
   export type UserFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * Filter, which User to fetch.
-     * 
-    **/
+     */
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Users to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<UserOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Users.
-     * 
-    **/
+     */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Users from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Users.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Users.
-     * 
-    **/
+     */
     distinct?: Enumerable<UserScalarFieldEnum>
   }
 
@@ -1608,53 +1564,45 @@ export namespace Prisma {
   export type UserFindFirstOrThrowArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * Filter, which User to fetch.
-     * 
-    **/
+     */
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Users to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<UserOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Users.
-     * 
-    **/
+     */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Users from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Users.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Users.
-     * 
-    **/
+     */
     distinct?: Enumerable<UserScalarFieldEnum>
   }
 
@@ -1665,46 +1613,39 @@ export namespace Prisma {
   export type UserFindManyArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * Filter, which Users to fetch.
-     * 
-    **/
+     */
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Users to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<UserOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for listing Users.
-     * 
-    **/
+     */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Users from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Users.
-     * 
-    **/
+     */
     skip?: number
     distinct?: Enumerable<UserScalarFieldEnum>
   }
@@ -1716,32 +1657,16 @@ export namespace Prisma {
   export type UserCreateArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * The data needed to create a User.
-     * 
-    **/
+     */
     data: XOR<UserCreateInput, UserUncheckedCreateInput>
-  }
-
-
-  /**
-   * User createMany
-   */
-  export type UserCreateManyArgs = {
-    /**
-     * The data used to create many Users.
-     * 
-    **/
-    data: Enumerable<UserCreateManyInput>
-    skipDuplicates?: boolean
   }
 
 
@@ -1751,23 +1676,19 @@ export namespace Prisma {
   export type UserUpdateArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * The data needed to update a User.
-     * 
-    **/
+     */
     data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
     /**
      * Choose, which User to update.
-     * 
-    **/
+     */
     where: UserWhereUniqueInput
   }
 
@@ -1778,13 +1699,11 @@ export namespace Prisma {
   export type UserUpdateManyArgs = {
     /**
      * The data used to update Users.
-     * 
-    **/
+     */
     data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
     /**
      * Filter which Users to update
-     * 
-    **/
+     */
     where?: UserWhereInput
   }
 
@@ -1795,28 +1714,23 @@ export namespace Prisma {
   export type UserUpsertArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * The filter to search for the User to update in case it exists.
-     * 
-    **/
+     */
     where: UserWhereUniqueInput
     /**
      * In case the User found by the `where` argument doesn't exist, create a new User with this data.
-     * 
-    **/
+     */
     create: XOR<UserCreateInput, UserUncheckedCreateInput>
     /**
      * In case the User was found with the provided `where` argument, update it with this data.
-     * 
-    **/
+     */
     update: XOR<UserUpdateInput, UserUncheckedUpdateInput>
   }
 
@@ -1827,18 +1741,15 @@ export namespace Prisma {
   export type UserDeleteArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * Filter which User to delete.
-     * 
-    **/
+     */
     where: UserWhereUniqueInput
   }
 
@@ -1849,8 +1760,7 @@ export namespace Prisma {
   export type UserDeleteManyArgs = {
     /**
      * Filter which Users to delete
-     * 
-    **/
+     */
     where?: UserWhereInput
   }
 
@@ -1861,13 +1771,11 @@ export namespace Prisma {
   export type User$taskArgs = {
     /**
      * Select specific fields to fetch from the Task
-     * 
-    **/
+     */
     select?: TaskSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: TaskInclude | null
     where?: TaskWhereInput
     orderBy?: Enumerable<TaskOrderByWithRelationInput>
@@ -1884,13 +1792,11 @@ export namespace Prisma {
   export type UserArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
   }
 
@@ -1967,36 +1873,31 @@ export namespace Prisma {
   export type TaskAggregateArgs = {
     /**
      * Filter which Task to aggregate.
-     * 
-    **/
+     */
     where?: TaskWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Tasks to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<TaskOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
-     * 
-    **/
+     */
     cursor?: TaskWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Tasks from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Tasks.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
@@ -2032,7 +1933,7 @@ export namespace Prisma {
   export type TaskGroupByArgs = {
     where?: TaskWhereInput
     orderBy?: Enumerable<TaskOrderByWithAggregationInput>
-    by: Array<TaskScalarFieldEnum>
+    by: TaskScalarFieldEnum[]
     having?: TaskScalarWhereWithAggregatesInput
     take?: number
     skip?: number
@@ -2081,7 +1982,7 @@ export namespace Prisma {
 
   export type TaskInclude = {
     user?: boolean | UserArgs
-  } 
+  }
 
   export type TaskGetPayload<S extends boolean | null | undefined | TaskArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
@@ -2100,13 +2001,13 @@ export namespace Prisma {
       : Task
 
 
-  type TaskCountArgs = Merge<
+  type TaskCountArgs = 
     Omit<TaskFindManyArgs, 'select' | 'include'> & {
       select?: TaskCountAggregateInputType | true
     }
-  >
 
   export interface TaskDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
     /**
      * Find zero or one Task that matches the filter.
      * @param {TaskFindUniqueArgs} args - Arguments to find a Task
@@ -2208,22 +2109,6 @@ export namespace Prisma {
     create<T extends TaskCreateArgs>(
       args: SelectSubset<T, TaskCreateArgs>
     ): Prisma__TaskClient<TaskGetPayload<T>>
-
-    /**
-     * Create many Tasks.
-     *     @param {TaskCreateManyArgs} args - Arguments to create many Tasks.
-     *     @example
-     *     // Create many Tasks
-     *     const task = await prisma.task.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends TaskCreateManyArgs>(
-      args?: SelectSubset<T, TaskCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
 
     /**
      * Delete a Task.
@@ -2504,18 +2389,15 @@ export namespace Prisma {
   export type TaskFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Task
-     * 
-    **/
+     */
     select?: TaskSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: TaskInclude | null
     /**
      * Filter, which Task to fetch.
-     * 
-    **/
+     */
     where: TaskWhereUniqueInput
   }
 
@@ -2537,18 +2419,15 @@ export namespace Prisma {
   export type TaskFindUniqueOrThrowArgs = {
     /**
      * Select specific fields to fetch from the Task
-     * 
-    **/
+     */
     select?: TaskSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: TaskInclude | null
     /**
      * Filter, which Task to fetch.
-     * 
-    **/
+     */
     where: TaskWhereUniqueInput
   }
 
@@ -2559,53 +2438,45 @@ export namespace Prisma {
   export type TaskFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Task
-     * 
-    **/
+     */
     select?: TaskSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: TaskInclude | null
     /**
      * Filter, which Task to fetch.
-     * 
-    **/
+     */
     where?: TaskWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Tasks to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<TaskOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Tasks.
-     * 
-    **/
+     */
     cursor?: TaskWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Tasks from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Tasks.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Tasks.
-     * 
-    **/
+     */
     distinct?: Enumerable<TaskScalarFieldEnum>
   }
 
@@ -2627,53 +2498,45 @@ export namespace Prisma {
   export type TaskFindFirstOrThrowArgs = {
     /**
      * Select specific fields to fetch from the Task
-     * 
-    **/
+     */
     select?: TaskSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: TaskInclude | null
     /**
      * Filter, which Task to fetch.
-     * 
-    **/
+     */
     where?: TaskWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Tasks to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<TaskOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Tasks.
-     * 
-    **/
+     */
     cursor?: TaskWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Tasks from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Tasks.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Tasks.
-     * 
-    **/
+     */
     distinct?: Enumerable<TaskScalarFieldEnum>
   }
 
@@ -2684,46 +2547,39 @@ export namespace Prisma {
   export type TaskFindManyArgs = {
     /**
      * Select specific fields to fetch from the Task
-     * 
-    **/
+     */
     select?: TaskSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: TaskInclude | null
     /**
      * Filter, which Tasks to fetch.
-     * 
-    **/
+     */
     where?: TaskWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Tasks to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<TaskOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for listing Tasks.
-     * 
-    **/
+     */
     cursor?: TaskWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Tasks from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Tasks.
-     * 
-    **/
+     */
     skip?: number
     distinct?: Enumerable<TaskScalarFieldEnum>
   }
@@ -2735,32 +2591,16 @@ export namespace Prisma {
   export type TaskCreateArgs = {
     /**
      * Select specific fields to fetch from the Task
-     * 
-    **/
+     */
     select?: TaskSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: TaskInclude | null
     /**
      * The data needed to create a Task.
-     * 
-    **/
+     */
     data: XOR<TaskCreateInput, TaskUncheckedCreateInput>
-  }
-
-
-  /**
-   * Task createMany
-   */
-  export type TaskCreateManyArgs = {
-    /**
-     * The data used to create many Tasks.
-     * 
-    **/
-    data: Enumerable<TaskCreateManyInput>
-    skipDuplicates?: boolean
   }
 
 
@@ -2770,23 +2610,19 @@ export namespace Prisma {
   export type TaskUpdateArgs = {
     /**
      * Select specific fields to fetch from the Task
-     * 
-    **/
+     */
     select?: TaskSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: TaskInclude | null
     /**
      * The data needed to update a Task.
-     * 
-    **/
+     */
     data: XOR<TaskUpdateInput, TaskUncheckedUpdateInput>
     /**
      * Choose, which Task to update.
-     * 
-    **/
+     */
     where: TaskWhereUniqueInput
   }
 
@@ -2797,13 +2633,11 @@ export namespace Prisma {
   export type TaskUpdateManyArgs = {
     /**
      * The data used to update Tasks.
-     * 
-    **/
+     */
     data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyInput>
     /**
      * Filter which Tasks to update
-     * 
-    **/
+     */
     where?: TaskWhereInput
   }
 
@@ -2814,28 +2648,23 @@ export namespace Prisma {
   export type TaskUpsertArgs = {
     /**
      * Select specific fields to fetch from the Task
-     * 
-    **/
+     */
     select?: TaskSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: TaskInclude | null
     /**
      * The filter to search for the Task to update in case it exists.
-     * 
-    **/
+     */
     where: TaskWhereUniqueInput
     /**
      * In case the Task found by the `where` argument doesn't exist, create a new Task with this data.
-     * 
-    **/
+     */
     create: XOR<TaskCreateInput, TaskUncheckedCreateInput>
     /**
      * In case the Task was found with the provided `where` argument, update it with this data.
-     * 
-    **/
+     */
     update: XOR<TaskUpdateInput, TaskUncheckedUpdateInput>
   }
 
@@ -2846,18 +2675,15 @@ export namespace Prisma {
   export type TaskDeleteArgs = {
     /**
      * Select specific fields to fetch from the Task
-     * 
-    **/
+     */
     select?: TaskSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: TaskInclude | null
     /**
      * Filter which Task to delete.
-     * 
-    **/
+     */
     where: TaskWhereUniqueInput
   }
 
@@ -2868,8 +2694,7 @@ export namespace Prisma {
   export type TaskDeleteManyArgs = {
     /**
      * Filter which Tasks to delete
-     * 
-    **/
+     */
     where?: TaskWhereInput
   }
 
@@ -2880,13 +2705,11 @@ export namespace Prisma {
   export type TaskArgs = {
     /**
      * Select specific fields to fetch from the Task
-     * 
-    **/
+     */
     select?: TaskSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: TaskInclude | null
   }
 
@@ -2898,14 +2721,6 @@ export namespace Prisma {
 
   // Based on
   // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
-
-  export const QueryMode: {
-    default: 'default',
-    insensitive: 'insensitive'
-  };
-
-  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
 
   export const SortOrder: {
     asc: 'asc',
@@ -2928,9 +2743,6 @@ export namespace Prisma {
 
 
   export const TransactionIsolationLevel: {
-    ReadUncommitted: 'ReadUncommitted',
-    ReadCommitted: 'ReadCommitted',
-    RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
   };
 
@@ -2958,7 +2770,7 @@ export namespace Prisma {
     AND?: Enumerable<UserWhereInput>
     OR?: Enumerable<UserWhereInput>
     NOT?: Enumerable<UserWhereInput>
-    id?: UuidFilter | string
+    id?: StringFilter | string
     username?: StringFilter | string
     email?: StringFilter | string
     password?: StringFilter | string
@@ -2998,7 +2810,7 @@ export namespace Prisma {
     AND?: Enumerable<UserScalarWhereWithAggregatesInput>
     OR?: Enumerable<UserScalarWhereWithAggregatesInput>
     NOT?: Enumerable<UserScalarWhereWithAggregatesInput>
-    id?: UuidWithAggregatesFilter | string
+    id?: StringWithAggregatesFilter | string
     username?: StringWithAggregatesFilter | string
     email?: StringWithAggregatesFilter | string
     password?: StringWithAggregatesFilter | string
@@ -3010,8 +2822,8 @@ export namespace Prisma {
     AND?: Enumerable<TaskWhereInput>
     OR?: Enumerable<TaskWhereInput>
     NOT?: Enumerable<TaskWhereInput>
-    id?: UuidFilter | string
-    user_id?: UuidFilter | string
+    id?: StringFilter | string
+    user_id?: StringFilter | string
     name?: StringFilter | string
     stat?: BoolFilter | boolean
     updated_at?: DateTimeFilter | Date | string
@@ -3049,8 +2861,8 @@ export namespace Prisma {
     AND?: Enumerable<TaskScalarWhereWithAggregatesInput>
     OR?: Enumerable<TaskScalarWhereWithAggregatesInput>
     NOT?: Enumerable<TaskScalarWhereWithAggregatesInput>
-    id?: UuidWithAggregatesFilter | string
-    user_id?: UuidWithAggregatesFilter | string
+    id?: StringWithAggregatesFilter | string
+    user_id?: StringWithAggregatesFilter | string
     name?: StringWithAggregatesFilter | string
     stat?: BoolWithAggregatesFilter | boolean
     updated_at?: DateTimeWithAggregatesFilter | Date | string
@@ -3095,15 +2907,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: TaskUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateManyInput = {
-    id: string
-    username: string
-    email: string
-    password: string
-    updated_at?: Date | string
-    created_at?: Date | string
   }
 
   export type UserUpdateManyMutationInput = {
@@ -3160,15 +2963,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TaskCreateManyInput = {
-    id: string
-    user_id: string
-    name: string
-    stat?: boolean
-    updated_at?: Date | string
-    created_at?: Date | string
-  }
-
   export type TaskUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -3186,18 +2980,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UuidFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    mode?: QueryMode
-    not?: NestedUuidFilter | string
-  }
-
   export type StringFilter = {
     equals?: string
     in?: Enumerable<string>
@@ -3209,7 +2991,6 @@ export namespace Prisma {
     contains?: string
     startsWith?: string
     endsWith?: string
-    mode?: QueryMode
     not?: NestedStringFilter | string
   }
 
@@ -3261,21 +3042,6 @@ export namespace Prisma {
     created_at?: SortOrder
   }
 
-  export type UuidWithAggregatesFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    mode?: QueryMode
-    not?: NestedUuidWithAggregatesFilter | string
-    _count?: NestedIntFilter
-    _min?: NestedStringFilter
-    _max?: NestedStringFilter
-  }
-
   export type StringWithAggregatesFilter = {
     equals?: string
     in?: Enumerable<string>
@@ -3287,7 +3053,6 @@ export namespace Prisma {
     contains?: string
     startsWith?: string
     endsWith?: string
-    mode?: QueryMode
     not?: NestedStringWithAggregatesFilter | string
     _count?: NestedIntFilter
     _min?: NestedStringFilter
@@ -3356,14 +3121,12 @@ export namespace Prisma {
   export type TaskCreateNestedManyWithoutUserInput = {
     create?: XOR<Enumerable<TaskCreateWithoutUserInput>, Enumerable<TaskUncheckedCreateWithoutUserInput>>
     connectOrCreate?: Enumerable<TaskCreateOrConnectWithoutUserInput>
-    createMany?: TaskCreateManyUserInputEnvelope
     connect?: Enumerable<TaskWhereUniqueInput>
   }
 
   export type TaskUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<Enumerable<TaskCreateWithoutUserInput>, Enumerable<TaskUncheckedCreateWithoutUserInput>>
     connectOrCreate?: Enumerable<TaskCreateOrConnectWithoutUserInput>
-    createMany?: TaskCreateManyUserInputEnvelope
     connect?: Enumerable<TaskWhereUniqueInput>
   }
 
@@ -3379,7 +3142,6 @@ export namespace Prisma {
     create?: XOR<Enumerable<TaskCreateWithoutUserInput>, Enumerable<TaskUncheckedCreateWithoutUserInput>>
     connectOrCreate?: Enumerable<TaskCreateOrConnectWithoutUserInput>
     upsert?: Enumerable<TaskUpsertWithWhereUniqueWithoutUserInput>
-    createMany?: TaskCreateManyUserInputEnvelope
     set?: Enumerable<TaskWhereUniqueInput>
     disconnect?: Enumerable<TaskWhereUniqueInput>
     delete?: Enumerable<TaskWhereUniqueInput>
@@ -3393,7 +3155,6 @@ export namespace Prisma {
     create?: XOR<Enumerable<TaskCreateWithoutUserInput>, Enumerable<TaskUncheckedCreateWithoutUserInput>>
     connectOrCreate?: Enumerable<TaskCreateOrConnectWithoutUserInput>
     upsert?: Enumerable<TaskUpsertWithWhereUniqueWithoutUserInput>
-    createMany?: TaskCreateManyUserInputEnvelope
     set?: Enumerable<TaskWhereUniqueInput>
     disconnect?: Enumerable<TaskWhereUniqueInput>
     delete?: Enumerable<TaskWhereUniqueInput>
@@ -3421,17 +3182,6 @@ export namespace Prisma {
     update?: XOR<UserUpdateWithoutTaskInput, UserUncheckedUpdateWithoutTaskInput>
   }
 
-  export type NestedUuidFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    not?: NestedUuidFilter | string
-  }
-
   export type NestedStringFilter = {
     equals?: string
     in?: Enumerable<string>
@@ -3457,31 +3207,6 @@ export namespace Prisma {
     not?: NestedDateTimeFilter | Date | string
   }
 
-  export type NestedUuidWithAggregatesFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    not?: NestedUuidWithAggregatesFilter | string
-    _count?: NestedIntFilter
-    _min?: NestedStringFilter
-    _max?: NestedStringFilter
-  }
-
-  export type NestedIntFilter = {
-    equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntFilter | number
-  }
-
   export type NestedStringWithAggregatesFilter = {
     equals?: string
     in?: Enumerable<string>
@@ -3497,6 +3222,17 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedStringFilter
     _max?: NestedStringFilter
+  }
+
+  export type NestedIntFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntFilter | number
   }
 
   export type NestedDateTimeWithAggregatesFilter = {
@@ -3547,11 +3283,6 @@ export namespace Prisma {
     create: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput>
   }
 
-  export type TaskCreateManyUserInputEnvelope = {
-    data: Enumerable<TaskCreateManyUserInput>
-    skipDuplicates?: boolean
-  }
-
   export type TaskUpsertWithWhereUniqueWithoutUserInput = {
     where: TaskWhereUniqueInput
     update: XOR<TaskUpdateWithoutUserInput, TaskUncheckedUpdateWithoutUserInput>
@@ -3572,8 +3303,8 @@ export namespace Prisma {
     AND?: Enumerable<TaskScalarWhereInput>
     OR?: Enumerable<TaskScalarWhereInput>
     NOT?: Enumerable<TaskScalarWhereInput>
-    id?: UuidFilter | string
-    user_id?: UuidFilter | string
+    id?: StringFilter | string
+    user_id?: StringFilter | string
     name?: StringFilter | string
     stat?: BoolFilter | boolean
     updated_at?: DateTimeFilter | Date | string
@@ -3624,14 +3355,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TaskCreateManyUserInput = {
-    id: string
-    name: string
-    stat?: boolean
-    updated_at?: Date | string
-    created_at?: Date | string
   }
 
   export type TaskUpdateWithoutUserInput = {

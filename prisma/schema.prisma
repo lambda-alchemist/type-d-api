@@ -7,8 +7,8 @@ generator client {
 
 datasource db {
 	provider          = "sqlite"
-	url               = "file://../sql.db"
-	shadowDatabaseUrl = "file://../alt.db"
+	url               = "file:./../sql.db"
+	shadowDatabaseUrl = "file:./../alt.db"
 }
 
 model User {
@@ -16,7 +16,7 @@ model User {
 	username   String
 	email      String   @unique
 	password   String
-  updated_at DateTime @default(now()) @updatedAt
+	updated_at DateTime @default(now()) @updatedAt
 	created_at DateTime @default(now())
 	task       Task[]
 }

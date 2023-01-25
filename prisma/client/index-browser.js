@@ -13,12 +13,12 @@ const Prisma = {}
 exports.Prisma = Prisma
 
 /**
- * Prisma Client JS version: 4.8.1
- * Query Engine version: d6e67a83f971b175a593ccc12e15c4a757f93ffe
+ * Prisma Client JS version: 4.9.0
+ * Query Engine version: ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5
  */
 Prisma.prismaVersion = {
-  client: "4.8.1",
-  engine: "d6e67a83f971b175a593ccc12e15c4a757f93ffe"
+  client: "4.9.0",
+  engine: "ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -89,11 +89,6 @@ Prisma.NullTypes = {
 // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 function makeEnum(x) { return x; }
 
-exports.Prisma.QueryMode = makeEnum({
-  default: 'default',
-  insensitive: 'insensitive'
-});
-
 exports.Prisma.SortOrder = makeEnum({
   asc: 'asc',
   desc: 'desc'
@@ -109,9 +104,6 @@ exports.Prisma.TaskScalarFieldEnum = makeEnum({
 });
 
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
-  ReadUncommitted: 'ReadUncommitted',
-  ReadCommitted: 'ReadCommitted',
-  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
