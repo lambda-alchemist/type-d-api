@@ -1,0 +1,15 @@
+{
+	"api": {
+		"prefix": "/",
+		"urls": [
+			{ "root": "/"},
+			{ "crud": "/crud" },
+			{ "auth": "/auth" }
+		]
+	},
+	"self": "/crud",
+	"content": {
+		"head": "JAX-url-api",
+		"desc": "Welcome to Type-d!"
+	}
+}
