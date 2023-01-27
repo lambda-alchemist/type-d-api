@@ -1,6 +1,6 @@
 import { Application } from "land:oak";
 import { yellow, green } from "std:color";
-import { router } from "router/url.ts";
+import { API } from "router/url.ts";
 
 type listen = {
 	secure:   boolean,
@@ -16,8 +16,8 @@ const localhost: listen = {
 
 const app = new Application();
 
-app.use(router.routes());
-app.use(router.allowedMethods());
+app.use(API.routes());
+app.use(API.allowedMethods());
 app.addEventListener("listen", ({ secure, hostname, port }: listen) => {
 	const protocol = secure ? "https://" : "http://";
 	const url = `${protocol}${hostname ?? "localhost"}:${port}`;
