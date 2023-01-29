@@ -1,6 +1,6 @@
 import { Application } from "land:oak";
 import { yellow, green } from "std:color";
-import { API } from "router/url.ts";
+import { CRUD } from "./routes.ts";
 
 type listen = {
 	secure:   boolean,
@@ -16,12 +16,14 @@ const localhost: listen = {
 
 const app = new Application();
 
-app.use(API.routes());
-app.use(API.allowedMethods());
-app.addEventListener("listen", ({ secure, hostname, port }: listen) => {
-	const protocol = secure ? "https://" : "http://";
-	const url = `${protocol}${hostname ?? "localhost"}:${port}`;
-	console.log(`${yellow("Listening on:")} ${green(url)}`);
-});
+app.use(CRUD.routes());
+app.use(CRUD.allowedMethods());
+app.addEventListener(
+	"listen", ({ secure, hostname, port }: listen) => {
+		const protocol = secure ? "https://" : "http://";
+		const url = `${protocol}${hostname ?? "localhost"}:${port}`;
+		console.log(`${yellow("Listening on:")} ${green(url)}`);
+	}
+);
 
 await app.listen(localhost);

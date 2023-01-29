@@ -6,13 +6,10 @@
 		"land:denodb": "https://deno.land/x/denodb@v1.2.0/mod.ts",
 		"land:zod":    "https://deno.land/x/zod@v3.20.2/mod.ts",
 		"land:oak":    "https://deno.land/x/oak@v11.1.0/mod.ts",
-		"oak:status":  "https://deno.land/x/oak_commmons@v0.3.1/status.ts",
 
-		"std:dotenv": "https://deno.land/std@v0.171.0/dotenv/mod.ts",
 		"std:color":  "https://deno.land/std@v0.171.0/fmt/colors.ts",
-		"std:uuid":   "https://deno.land/std@v0.171.0/uuid/mod.ts",
-
-		"router/": "./core/router/",
-		"data/":   "./core/data/"
+		"std:dotenv": "https://deno.land/std@v0.171.0/dotenv/mod.ts",
+		"std:status": "https://deno.land/std@v0.175.0/http/http_status.ts",
+		"std:uuid":   "https://deno.land/std@v0.171.0/uuid/mod.ts"
 	}
 }
