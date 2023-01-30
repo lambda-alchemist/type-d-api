@@ -1,4 +1,4 @@
-import { type Context, send, BodyOptions, BodyJson } from "land:oak";
+import { type Context } from "land:oak";
 import { hash } from "land:bcrypt";
 import { Status } from "std:status";
 import * as Model from "mvc:model";
@@ -11,6 +11,7 @@ async function task_list(context: Context) {
 	const total = await Model.Task.count();
 	context.response.status = Status.OK;
 	context.response.body = {
+		message: "Succefully listed tasks",
 		count: total,
 		data: tasks,
 	}
@@ -22,7 +23,7 @@ async function task_create(context: Context) {
 	task.save();
 	context.response.status = Status.Created;
 	context.response.body = {
-		message: "Succefuly created Task",
+		message: "Succefully created Task",
 		task: name
 	}
 }
@@ -62,8 +63,8 @@ export {
 	task_list,
 	task_create,
 	task_retrieve,
-	task_update,
-	task_modify,
+	// task_update,
+	// task_modify,
 	task_delete,
 	user_create,
  };
