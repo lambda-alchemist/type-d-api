@@ -27,7 +27,7 @@ class Task extends Model {
 		status: DataTypes.BOOLEAN
 	};
 	static defaults = {
-		stat: false
+		status: false
 	}
 	static users() {
 		return this.hasOne(User);
