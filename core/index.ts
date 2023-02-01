@@ -1,5 +1,6 @@
 import { Application } from "land:oak";
-import { yellow, green } from "std:color";
+import * as Color from "std:color";
+import * as Log from "mvc:log";
 import * as Router from "mvc:route";
 
 type listen = {
@@ -15,8 +16,8 @@ const localhost: listen = {
 }
 
 const app = new Application();
-
-// app.use(log)
+app.use(Log.logger)
+app.use(Log.json_only)
 app.use(Router.crud.routes());
 app.use(Router.auth.routes());
 app.use(Router.crud.allowedMethods());
@@ -25,7 +26,7 @@ app.addEventListener(
 	"listen", ({ secure, hostname, port }: listen) => {
 		const protocol = secure ? "https://" : "http://";
 		const url = `${protocol}${hostname ?? "localhost"}:${port}`;
-		console.log(`${yellow("Listening on:")} ${green(url)}`);
+		console.log(`${Color.yellow("Listening on:")} ${Color.green(url)}`);
 	}
 );
 

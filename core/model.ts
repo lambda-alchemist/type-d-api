@@ -1,15 +1,13 @@
-import { Database, DataTypes, Model } from "land:denodb";
+import { Database, DataTypes, Model, SQLite3Connector } from "land:denodb";
 
-const db = new Database(
-	"sqlite3",
-	{ filepath: "./db.sqlite" }
-);
+const sql = new SQLite3Connector({ filepath: './db.sqlite3' });
+const db = new Database(sql);
 
 class User extends Model {
 	static table = "User";
 	static timestamps = true;
 	static fields = {
-		id:       DataTypes.UUID,
+		id:       { type: DataTypes.UUID, primaryKey: true },
 		name:     DataTypes.string(255),
 		password: DataTypes.TEXT
 	};
@@ -20,9 +18,9 @@ class User extends Model {
 
 class Task extends Model {
 	static table = "Task";
-	static timestamp = true;
+	static timestamps = true;
 	static fields = {
-		id:     DataTypes.UUID,
+		id:     { type: DataTypes.UUID, primaryKey: true },
 		name:   DataTypes.string(63),
 		status: DataTypes.BOOLEAN
 	};

@@ -1,16 +1,29 @@
-import { Middleware } from "land:oak";
-import {
-	red,
-	yellow,
-	green,
-	cyan
-} from "std:color";
+import { type Context } from "land:oak";
+import * as Color from "std:color";
 
-const log: Middleware = async (request: any, response: any, next: Function) => {
+const logger = async (context: Context, next: Function) => {
 	await next();
-	const status = response.status;
-	const text = `${status}`
+	const date   = new Date;
+	const uri    = context.request.url.pathname;
+	const method = context.request.method;
+	const host   = context.request.url.host;
+	const status = context.response.status;
+	const time   = context.response.headers.get("X-Response-Time");
+	const text   =
+	`[${Color.brightCyan(date.toISOString())}] - ${method} ${status} ${uri} ${time}`
 	console.log(text);
 }
 
-export default log;
+const json_only = async (context: Context, next: Function) => {
+	context.response.headers.set("Content-Type", "application/json");
+	if (context.request.headers.get("Content-Type") !== "application/json") {
+		context.response.status = 400;
+		context.response.body = {
+			error: "Invalid Content-Type, only application/json is accepted"
+		};
+		return;
+	}
+	await next();
+}
+
+export { logger, json_only };
