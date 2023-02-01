@@ -18,18 +18,21 @@ async function task_list(context: Context) {
 
 async function task_create(context: Context) {
 	const { name } = await context.request.body().value;
-	const task = await Model.Task.create({ name: name });
-	task.save();
+	const task = new Model.Task();
+		task.id     = crypto.randomUUID();
+		task.name   = name;
+		task.status = false;
+	await task.save();
 	context.response.status = Status.Created;
 	context.response.body = {
 		message: "Succefully created task",
 		record: task
-	}
+	};
 }
 
 async function task_retrieve(context: Context) {
 	const { id } = await context.request.body().value;
-	const task = await Model.Task.find(id)
+	const task = await Model.Task.find(id);
 	context.response.body = {
 		message : "Succefully found task",
 		record: task
@@ -38,7 +41,7 @@ async function task_retrieve(context: Context) {
 
 async function task_update(context: Context) {
 	const { put } = await context.request.body().value;
-	const c = await Model.Task.where( "id", put.id).update(put);
+	const c = await Model.Task.where( "id", put.id ).update(put);
 	context.response.body = {
 		message: "Succefully updated task",
 		put: put,
@@ -54,7 +57,7 @@ async function task_modify(context: Context) {
 	};
 }
 async function task_delete(context: Context) {
-	const { id }: { id: string } = await context.request.body().value;
+	const { id } = await context.request.body().value;
 	await Model.Task.deleteById(id);
 	context.response.body = {
 		message: "Succefully deleted task"
@@ -62,14 +65,18 @@ async function task_delete(context: Context) {
 }
 
 async function user_create(context: Context) {
-	const { name, password }: { name: string, password: string} = await context.request.body().value;
+	const { name, password } = await context.request.body().value;
 	const passhash = await hash(password);
-	const user = await Model.User.create({ name: name, password: passhash })
+	const user = await Model.User.create({
+		id:       crypto.randomUUID(),
+		name:     name,
+		password: passhash
+	});
 	user.save;
 	context.response.status = Status.Created;
 	context.response.body = {
 		message: "Succefully created User",
-		user: name
+		user: user
 	};
 }
 

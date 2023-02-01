@@ -24,14 +24,11 @@ class Task extends Model {
 		name:   DataTypes.string(63),
 		status: DataTypes.BOOLEAN
 	};
-	static defaults = {
-		status: false
-	}
-	static users() {
+	static user() {
 		return this.hasOne(User);
 	}
 }
 
 db.link([User, Task]);
-await db.sync({ drop: true });
+await db.sync();
 export { User, Task };
