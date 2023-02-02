@@ -1,7 +1,7 @@
-import { type Context } from "land:oak";
+import * as Oak from "land:oak";
 import * as Color from "std:color";
 
-const logger = async (context: Context, next: Function) => {
+const http_reqs = async (context: Oak.Context, next: Function) => {
 	await next();
 	const date   = new Date;
 	const uri    = context.request.url.pathname;
@@ -14,7 +14,7 @@ const logger = async (context: Context, next: Function) => {
 	console.log(text);
 }
 
-const json_only = async (context: Context, next: Function) => {
+const json_only = async (context: Oak.Context, next: Function) => {
 	context.response.headers.set("Content-Type", "application/json");
 	if (context.request.headers.get("Content-Type") !== "application/json") {
 		context.response.status = 400;
@@ -26,4 +26,4 @@ const json_only = async (context: Context, next: Function) => {
 	await next();
 }
 
-export { logger, json_only };
+export { http_reqs, json_only };

@@ -1,28 +1,34 @@
-import { Database, DataTypes, Model, SQLite3Connector } from "land:denodb";
+import * as ORM from "land:denodb";
 
-const sql = new SQLite3Connector({ filepath: './db.sqlite3' });
-const db = new Database(sql);
+const sqlite = new ORM.SQLite3Connector({ filepath: './db.sqlite3' });
+const db = new ORM.Database(sqlite);
 
-class User extends Model {
+class User extends ORM.Model {
 	static table = "User";
 	static timestamps = true;
 	static fields = {
-		id:       { type: DataTypes.UUID, primaryKey: true },
-		name:     DataTypes.string(255),
-		password: DataTypes.TEXT
+		id: {
+			type: ORM.DataTypes.UUID,
+			primaryKey: true
+		},
+		name:     ORM.DataTypes.string(255),
+		password: ORM.DataTypes.TEXT
 	};
 	static tasks() {
 		return this.hasMany(Task);
 	}
 }
 
-class Task extends Model {
+class Task extends ORM.Model {
 	static table = "Task";
 	static timestamps = true;
 	static fields = {
-		id:     { type: DataTypes.UUID, primaryKey: true },
-		name:   DataTypes.string(63),
-		status: DataTypes.BOOLEAN
+		id: {
+			type: ORM.DataTypes.UUID,
+			primaryKey: true
+		},
+		name:   ORM.DataTypes.string(63),
+		status: ORM.DataTypes.BOOLEAN
 	};
 	static user() {
 		return this.hasOne(User);

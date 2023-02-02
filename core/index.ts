@@ -1,6 +1,6 @@
 import { Application } from "land:oak";
-import * as Color from "std:color";
-import * as Log from "mvc:log";
+import * as Color  from "std:color";
+import * as Log    from "mvc:log";
 import * as Router from "mvc:route";
 
 type listen = {
@@ -16,7 +16,7 @@ const localhost: listen = {
 }
 
 const app = new Application();
-app.use(Log.logger)
+app.use(Log.http_reqs)
 app.use(Log.json_only)
 app.use(Router.crud.routes());
 app.use(Router.auth.routes());

@@ -1,10 +1,9 @@
 import { Context } from "land:oak";
-import { hash } from "land:bcrypt";
-import { Status } from "std:status";
+import * as bcrypt from "land:bcrypt";
+import * as HTTP from "std:status";
 import * as Model from "mvc:model";
 
 async function task_list(context: Context) {
-	// const { page = 1, size = 10 } = Number(context.request.url.searchParams);
 	const size = Number(context.request.url.searchParams.get("size")) || 10;
 	const page = Number(context.request.url.searchParams.get("page")) || 1;
 	const tasks = await Model.Task.limit(size).offset((size - 1) * page).all();
@@ -16,14 +15,31 @@ async function task_list(context: Context) {
 	}
 }
 
+async function user_create(context: Context) {
+	const { name, password } = await context.request.body().value;
+	const uuid = crypto.randomUUID()
+	const hash = await bcrypt.hash(password);
+	const user = new Model.User();
+		user.id       = uuid,
+		user.name     = name,
+		user.password = hash
+	await user.save();
+	context.response.status = HTTP.Status.Created;
+	context.response.body = {
+		message: "Succefully created User",
+		user: user
+	};
+}
+
 async function task_create(context: Context) {
 	const { name } = await context.request.body().value;
+	const uuid = crypto.randomUUID();
 	const task = new Model.Task();
-		task.id     = crypto.randomUUID();
+		task.id     = uuid;
 		task.name   = name;
 		task.status = false;
 	await task.save();
-	context.response.status = Status.Created;
+	context.response.status = HTTP.Status.Created;
 	context.response.body = {
 		message: "Succefully created task",
 		record: task
@@ -64,20 +80,16 @@ async function task_delete(context: Context) {
 	};
 }
 
-async function user_create(context: Context) {
-	const { name, password } = await context.request.body().value;
-	const passhash = await hash(password);
-	const user = await Model.User.create({
-		id:       crypto.randomUUID(),
-		name:     name,
-		password: passhash
-	});
-	user.save;
-	context.response.status = Status.Created;
+async function user_list(context: Context) {
+	const size = Number(context.request.url.searchParams.get("size")) || 10;
+	const page = Number(context.request.url.searchParams.get("page")) || 1;
+	const tasks = await Model.User.offset(page).limit(size).all();
+	const total = await Model.User.count();
 	context.response.body = {
-		message: "Succefully created User",
-		user: user
-	};
+		message: "Succefully listed users",
+		count: total,
+		data: tasks,
+	}
 }
 
 export {
@@ -87,5 +99,10 @@ export {
 	task_update,
 	task_modify,
 	task_delete,
+	user_list,
 	user_create,
+	// user_retrieve,
+	// user_update,
+	// user_modify,
+	// user_delete
  };
