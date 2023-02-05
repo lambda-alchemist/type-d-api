@@ -1,33 +1,25 @@
-import { Application } from "land:oak";
+import * as Oak    from "land:oak";
 import * as Color  from "std:color";
 import * as Log    from "mvc:log";
 import * as Router from "mvc:route";
 
-type listen = {
-	secure:   boolean,
-	hostname: string,
-	port:     number
-}
+const listen
+	: { secure: boolean, hostname: string,      port: number }
+	= { secure: false,   hostname: "localhost", port: 8800   }
 
-const localhost: listen = {
-	secure:   false,
-	hostname: "localhost",
-	port:     8800
-}
-
-const app = new Application();
-app.use(Log.http_reqs)
-app.use(Log.json_only)
+const app = new Oak.Application();
+app.use(Log.logger)
+app.use(Log.json)
 app.use(Router.crud.routes());
 app.use(Router.auth.routes());
 app.use(Router.crud.allowedMethods());
 app.use(Router.auth.allowedMethods());
 app.addEventListener(
-	"listen", ({ secure, hostname, port }: listen) => {
+	"listen", ({ secure, hostname, port }: typeof listen) => {
 		const protocol = secure ? "https://" : "http://";
 		const url = `${protocol}${hostname ?? "localhost"}:${port}`;
 		console.log(`${Color.yellow("Listening on:")} ${Color.green(url)}`);
 	}
 );
 
-await app.listen(localhost);
+await app.listen(listen);

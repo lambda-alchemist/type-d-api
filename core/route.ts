@@ -1,4 +1,4 @@
-import * as Oak from "land:oak";
+import * as Oak    from "land:oak";
 import * as Handle from "mvc:view"
 
 const auth = new Oak.Router;

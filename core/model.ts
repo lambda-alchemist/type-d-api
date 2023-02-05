@@ -7,12 +7,9 @@ class User extends ORM.Model {
 	static table = "User";
 	static timestamps = true;
 	static fields = {
-		id: {
-			type: ORM.DataTypes.UUID,
-			primaryKey: true
-		},
-		name:     ORM.DataTypes.string(255),
-		password: ORM.DataTypes.TEXT
+		id:       { type: ORM.DataTypes.UUID,   primaryKey: true },
+		name:     { type: ORM.DataTypes.STRING, length: 255 },
+		password: { type: ORM.DataTypes.TEXT }
 	};
 	static tasks() {
 		return this.hasMany(Task);
@@ -23,12 +20,9 @@ class Task extends ORM.Model {
 	static table = "Task";
 	static timestamps = true;
 	static fields = {
-		id: {
-			type: ORM.DataTypes.UUID,
-			primaryKey: true
-		},
-		name:   ORM.DataTypes.string(63),
-		status: ORM.DataTypes.BOOLEAN
+		id:     { type: ORM.DataTypes.UUID,   primaryKey: true },
+		name:   { type: ORM.DataTypes.STRING, length: 63 },
+		status: { type: ORM.DataTypes.BOOLEAN }
 	};
 	static user() {
 		return this.hasOne(User);
