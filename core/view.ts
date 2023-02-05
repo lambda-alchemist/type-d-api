@@ -9,24 +9,24 @@ const json: Oak.BodyOptions<"json"> = { type: "json" };
 async function user_list(context: Oak.Context) {
 	const size = Number(context.request.url.searchParams.get("size")) || 10;
 	const page = Number(context.request.url.searchParams.get("page")) || 1;
-	const tasks = await Model.User.offset((size - 1) * page).limit(size).all();
+	const data = await Model.User.offset((size - 1) * page).limit(size).get();
 	const total = await Model.User.count();
 	context.response.body = {
 		message: "Succefully listed users",
 		count: total,
-		data: tasks,
+		data: data,
 	}
 }
 
 async function task_list(context: Oak.Context) {
 	const size = Number(context.request.url.searchParams.get("size")) || 10;
 	const page = Number(context.request.url.searchParams.get("page")) || 1;
-	const tasks = await Model.Task.offset((size - 1) * page).limit(size).all();
+	const data = await Model.Task.offset((size - 1) * page).limit(size).get();
 	const total = await Model.Task.count();
 	context.response.body = {
 		message: "Succefully listed tasks",
 		count: total,
-		data: tasks,
+		data: data,
 	}
 }
 

@@ -8,8 +8,9 @@ const listen
 	= { secure: false,   hostname: "localhost", port: 8800   }
 
 const app = new Oak.Application();
-app.use(Log.logger)
-app.use(Log.json)
+app.use(Log.logger);
+app.use(Log.time);
+app.use(Log.json);
 app.use(Router.crud.routes());
 app.use(Router.auth.routes());
 app.use(Router.crud.allowedMethods());

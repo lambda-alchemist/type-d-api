@@ -13,18 +13,26 @@ async function json(context: Oak.Context, next: Function) {
 	await next();
 }
 
+async function time(context: Oak.Context, next: Function) {
+	const start = Date.now();
+	await next();
+	const time = Date.now() - start;
+	context.response.headers.set("X-Response-Time", `${time}ms`);
+}
+
 async function logger(context: Oak.Context, next: Function) {
 	await next();
-	const date   = new Date;
+	const date   = new Date().toISOString();
+	const host   = context.request.url.hostname;
 	const uri    = context.request.url.pathname;
 	const method = context.request.method;
-	const host   = context.request.url.host;
 	const status = context.response.status;
 	const time   = context.response.headers.get("X-Response-Time");
 	const text   =
-		`[${Color.brightCyan(date.toISOString())}] - ` +
-		` ${status} ${method} ${uri} ${time}`
+		`[${Color.brightCyan(date.slice(0, 10))} ` +
+		`${Color.brightCyan(date.slice(11, 19))}] - ` +
+		`${status} ${method} ${uri} ${time}`;
 	console.log(text);
 }
 
-export { logger, json };
+export { json, time, logger };
