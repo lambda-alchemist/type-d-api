@@ -28,4 +28,4 @@ async function logger(context: Oak.Context, next: Function) {
 	console.log(text);
 }
 
-export { json, time, logger };
+export { json, logger };
