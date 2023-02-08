@@ -13,13 +13,6 @@ async function json(context: Oak.Context, next: Function) {
 	await next();
 }
 
-async function time(context: Oak.Context, next: Function) {
-	const start = Date.now();
-	await next();
-	const time = Date.now() - start;
-	context.response.headers.set("X-Response-Time", `${time}ms`);
-}
-
 async function logger(context: Oak.Context, next: Function) {
 	await next();
 	const date   = new Date().toISOString();

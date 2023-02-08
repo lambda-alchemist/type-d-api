@@ -5,8 +5,9 @@ const auth = new Oak.Router;
 const crud = new Oak.Router;
 
 auth
-	// .post("/auth/login",  async (context) => await Handle.auth_login(context))
-	// .post("/auth/logout", async (context) => await Handle.auth_logout(context))
+	.post("/auth/login",  async (context) => await Handle.auth_login(context))
+	.post("/auth/logout", async (context) => await Handle.auth_logout(context))
+	.post("/auth/signup", async (context) => await Handle.auth_signup(context))
 
 crud
 	.get   ("/crud/task",     async (context) => await Handle.task_list(context))
