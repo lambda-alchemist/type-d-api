@@ -3,7 +3,6 @@ import * as bcrypt from "land:bcrypt";
 import * as JWT    from "land:djwt"
 import * as HTTP   from "std:status";
 import * as Model  from "self:model";
-import * as Crud   from "self:crud";
 
 const json: Oak.BodyOptions<"json"> = { type: "json" }
 

@@ -1,6 +1,23 @@
 import * as Oak   from "land:oak";
+import * as djwt  from "land:djwt";
+import * as HTTP  from "std:status";
 import * as Color from "std:color";
 
+async function auth(context: Oak.Context, next: VoidFunction) {
+	const auth = context.request.headers.get("Authorization");
+	if (!auth) {
+		context.response.status = HTTP.Status.Unauthorized;
+		context.response.body = { message: "Not Authorized" };
+		return;
+	}
+	const jwt = auth.replace("Bearer ", "");
+	try {
+		const data = djwt.verify(jwt, jwt_key)
+	} catch {
+		console.log("error")
+	}
+	await next();
+}
 async function json(context: Oak.Context, next: Function) {
 	context.response.headers.set("Content-Type", "application/json");
 	if (context.request.headers.get("Content-Type") !== "application/json") {
