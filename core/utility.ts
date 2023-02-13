@@ -17,14 +17,14 @@ async function logger(context: Oak.Context, next: Function) {
 	await next();
 	const date   = new Date().toISOString();
 	const host   = context.request.url.hostname;
-	const uri    = context.request.url.pathname;
+	const path   = context.request.url.pathname;
 	const method = context.request.method;
 	const status = context.response.status;
 	const time   = context.response.headers.get("X-Response-Time");
 	const text   =
 		`[${Color.brightCyan(date.slice(0, 10))} ` +
 		`${Color.brightCyan(date.slice(11, 19))}] - ` +
-		`${status} ${method} ${uri} ${time}`;
+		`${host} ${status} ${method} ${path} ${time}`;
 	console.log(text);
 }
 

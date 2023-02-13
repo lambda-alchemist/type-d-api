@@ -1,7 +1,7 @@
 import * as Color   from "std:color";
 import * as Oak     from "land:oak";
-import * as Utility from "mvc:log";
-import * as Router  from "mvc:route";
+import * as Utility from "self:utils";
+import * as Router  from "self:route";
 
 const listen
 	: { secure: boolean, hostname: string,      port: number }

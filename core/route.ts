@@ -1,4 +1,4 @@
-import * as Oak    from "land:oak";
+import * as Oak  from "land:oak";
 import * as Auth from "self:auth"
 import * as Crud from "self:crud";
 
@@ -8,9 +8,9 @@ const task = new Oak.Router();
 const user = new Oak.Router();
 
 auth
-	.post("/login",  async (context) => await Auth.auth_login(context))
-	.post("/logout", async (context) => await Auth.auth_logout(context))
-	.post("/signup", async (context) => await Auth.auth_signup(context))
+	.post("/login",  async (context) => await Auth.login(context))
+	.post("/logout", async (context) => await Auth.logout(context))
+	.post("/signup", async (context) => await Auth.signup(context))
 
 user
 	.get   ("/user",     async (context) => await Crud.user_list(context))
