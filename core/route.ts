@@ -1,29 +1,36 @@
 import * as Oak    from "land:oak";
-import * as Handle from "mvc:view"
+import * as Auth from "self:auth"
+import * as Crud from "self:crud";
 
-const auth = new Oak.Router;
-const crud = new Oak.Router;
+const router = new Oak.Router();
+const auth = new Oak.Router();
+const task = new Oak.Router();
+const user = new Oak.Router();
 
 auth
-	.post("/auth/login",  async (context) => await Handle.auth_login(context))
-	.post("/auth/logout", async (context) => await Handle.auth_logout(context))
-	.post("/auth/signup", async (context) => await Handle.auth_signup(context))
+	.post("/login",  async (context) => await Auth.auth_login(context))
+	.post("/logout", async (context) => await Auth.auth_logout(context))
+	.post("/signup", async (context) => await Auth.auth_signup(context))
 
-crud
-	.get   ("/crud/task",     async (context) => await Handle.task_list(context))
-	.post  ("/crud/task",     async (context) => await Handle.task_create(context))
-	.get   ("/crud/task/:id", async (context) => await Handle.task_retrieve(context))
-	.patch ("/crud/task/:id", async (context) => await Handle.task_modify(context))
-	.put   ("/crud/task/:id", async (context) => await Handle.task_update(context))
-	.delete("/crud/task/:id", async (context) => await Handle.task_delete(context))
-	.get   ("/crud/user",     async (context) => await Handle.user_list(context))
-	.post  ("/crud/user",     async (context) => await Handle.user_create(context))
-	.get   ("/crud/user/:id", async (context) => await Handle.user_retrieve(context))
-	.patch ("/crud/user/:id", async (context) => await Handle.user_modify(context))
-	.put   ("/crud/user/:id", async (context) => await Handle.user_update(context))
-	.delete("/crud/user/:id", async (context) => await Handle.user_delete(context))
+user
+	.get   ("/user",     async (context) => await Crud.user_list(context))
+	.post  ("/user",     async (context) => await Crud.user_create(context))
+	.get   ("/user/:id", async (context) => await Crud.user_retrieve(context))
+	.patch ("/user/:id", async (context) => await Crud.user_modify(context))
+	.put   ("/user/:id", async (context) => await Crud.user_update(context))
+	.delete("/user/:id", async (context) => await Crud.user_delete(context))
 
-export {
-	auth,
-	crud
-};
+task
+	.get   ("/task",     async (context) => await Crud.task_list(context))
+	.post  ("/task",     async (context) => await Crud.task_create(context))
+	.get   ("/task/:id", async (context) => await Crud.task_retrieve(context))
+	.patch ("/task/:id", async (context) => await Crud.task_modify(context))
+	.put   ("/task/:id", async (context) => await Crud.task_update(context))
+	.delete("/task/:id", async (context) => await Crud.task_delete(context))
+
+router
+	.use("/auth", auth.routes(), router.allowedMethods())
+	.use("/crud", user.routes(), user.allowedMethods())
+	.use("/crud", task.routes(), task.allowedMethods())
+
+export { router }

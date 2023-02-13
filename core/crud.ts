@@ -5,19 +5,6 @@ import * as Model  from "mvc:model";
 
 const json: Oak.BodyOptions<"json"> = { type: "json" };
 
-async function auth_login(context : Oak.Context) {
-
-}
-
-async function auth_logout(context : Oak.Context) {
-
-}
-
-async function auth_signin(context : Oak.Context) {
-	const body = await context.request.body(json).value;
-	const user = Model.UserSchemaFull.parse(body);
-}
-
 async function user_list(context: Oak.Context) {
 	const size = Number(context.request.url.searchParams.get("size")) || 10;
 	const page = Number(context.request.url.searchParams.get("page")) || 1;

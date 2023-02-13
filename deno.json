@@ -27,9 +27,10 @@
 		"std:status": "https://deno.land/std@v0.176.0/http/http_status.ts",
 		"std:uuid":   "https://deno.land/std@v0.176.0/uuid/mod.ts",
 
-		"mvc:log":   "./core/log.ts",
-		"mvc:model": "./core/model.ts",
-		"mvc:view":  "./core/view.ts",
-		"mvc:route": "./core/route.ts"
+		"self:model": "./core/model.ts",
+		"self:route": "./core/route.ts",
+		"self:crud":  "./core/crud.ts",
+		"self:auth":  "./core/auth.ts",
+		"self:utils": "./core/utility.ts"
 	}
 }
