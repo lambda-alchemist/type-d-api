@@ -12,18 +12,18 @@ async function signup(context : Oak.Context) {
 	const { password } = body;
 	const hash = await bcrypt.hash(password);
 	await Model.User.create({
-		uuid: uuid,
-		name: body.username,
-		mail: body.email,
-		pass: hash
+		uuid:     uuid,
+		email:    body.email,
+		username: body.username,
+		password: hash
 	})
 	context.response.status = HTTP.Status.Created;
 	context.response.body = {
 		message: "Succefully created user",
 		data: {
-			uuid: uuid,
-			name: body.username,
-			mail: body.email
+			uuid:     uuid,
+			email:    body.email,
+			username: body.username
 		}
 	}
 }

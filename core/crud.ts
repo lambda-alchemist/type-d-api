@@ -5,7 +5,7 @@ import * as Model  from "self:model";
 
 const json: Oak.BodyOptions<"json"> = { type: "json" };
 
-async function user_list(context: Oak.Context) {
+export async function user_list(context: Oak.Context) {
 	const size = Number(context.request.url.searchParams.get("size")) || 10;
 	const page = Number(context.request.url.searchParams.get("page")) || 1;
 	const data = await Model.User.offset((size - 1) * page).limit(size).get();
@@ -17,13 +17,14 @@ async function user_list(context: Oak.Context) {
 	}
 }
 
-async function user_create(context: Oak.Context) {
-	const { name, password } = await context.request.body(json).value;
+export async function user_create(context: Oak.Context) {
+	const { email, username, password } = await context.request.body(json).value;
 	const uuid = crypto.randomUUID()
 	const hash = await bcrypt.hash(password);
 	const user = new Model.User();
 		user.uuid     = uuid,
-		user.name     = name,
+		user.email    = email,
+		user.username = username,
 		user.password = hash
 	await user.save();
 	context.response.status = HTTP.Status.Created;
@@ -33,7 +34,7 @@ async function user_create(context: Oak.Context) {
 	};
 }
 
-async function user_retrieve(context: Oak.Context) {
+export async function user_retrieve(context: Oak.Context) {
 	const { id } = await context.request.body(json).value;
 	const user = await Model.User.find(id);
 	context.response.body = {
@@ -42,7 +43,7 @@ async function user_retrieve(context: Oak.Context) {
 	};
 }
 
-async function user_update(context: Oak.Context) {
+export async function user_update(context: Oak.Context) {
 	const { put } = await context.request.body(json).value;
 	const c = await Model.User.where( "id", put.id ).update(put);
 	context.response.body = {
@@ -52,7 +53,7 @@ async function user_update(context: Oak.Context) {
 	};
 }
 
-async function user_modify(context: Oak.Context) {
+export async function user_modify(context: Oak.Context) {
 	const { id, patch } = await context.request.body(json).value;
 	await Model.User.where("id", id).update(patch);
 	context.response.body = {
@@ -60,7 +61,7 @@ async function user_modify(context: Oak.Context) {
 	};
 }
 
-async function user_delete(context: Oak.Context) {
+export async function user_delete(context: Oak.Context) {
 	const { id } = await context.request.body(json).value;
 	await Model.User.deleteById(id);
 	context.response.body = {
@@ -68,7 +69,7 @@ async function user_delete(context: Oak.Context) {
 	};
 }
 
-async function task_list(context: Oak.Context) {
+export async function task_list(context: Oak.Context) {
 	const size = Number(context.request.url.searchParams.get("size")) || 10;
 	const page = Number(context.request.url.searchParams.get("page")) || 1;
 	const data = await Model.User.offset((size - 1) * page).limit(size).get();
@@ -80,14 +81,17 @@ async function task_list(context: Oak.Context) {
 	}
 }
 
-async function task_create(context: Oak.Context) {
+export async function task_create(context: Oak.Context) {
 	const { name } = await context.request.body(json).value;
 	const uuid = crypto.randomUUID();
 	const stat = false;
-	const task = new Model.User();
-		task.id     = uuid;
-		task.name   = name;
-		task.status = stat;
+	const date = new Date();
+	const task = new Model.Task();
+		task.uuid         = uuid;
+		task.title        = name;
+		task.completed    = stat;
+		task.completed_at = null;
+		task.due_date     = date;
 	await task.save();
 	context.response.status = HTTP.Status.Created;
 	context.response.body = {
@@ -96,18 +100,18 @@ async function task_create(context: Oak.Context) {
 	};
 }
 
-async function task_retrieve(context: Oak.Context) {
+export async function task_retrieve(context: Oak.Context) {
 	const { id } = await context.request.body(json).value;
-	const task = await Model.User.find(id);
+	const task = await Model.Task.find(id);
 	context.response.body = {
 		message : "Succefully found task",
 		record: task
 	};
 }
 
-async function task_update(context: Oak.Context) {
+export async function task_update(context: Oak.Context) {
 	const { put } = await context.request.body(json).value;
-	const c = await Model.User.where( "id", put.id ).update(put);
+	const c = await Model.Task.where( "id", put.id ).update(put);
 	context.response.body = {
 		message: "Succefully updated task",
 		put: put,
@@ -115,33 +119,18 @@ async function task_update(context: Oak.Context) {
 	};
 }
 
-async function task_modify(context: Oak.Context) {
+export async function task_modify(context: Oak.Context) {
 	const { id, patch } = await context.request.body(json).value;
-	await Model.User.where("id", id).update(patch);
+	await Model.Task.where("id", id).update(patch);
 	context.response.body = {
 		message: "Succefully modified task"
 	};
 }
 
-async function task_delete(context: Oak.Context) {
+export async function task_delete(context: Oak.Context) {
 	const { id } = await context.request.body(json).value;
-	await Model.User.deleteById(id);
+	await Model.Task.deleteById(id);
 	context.response.body = {
 		message: "Succefully deleted task"
 	};
 }
-
-export {
-	task_list,
-	task_create,
-	task_retrieve,
-	task_update,
-	task_modify,
-	task_delete,
-	user_list,
-	user_create,
-	user_retrieve,
-	user_update,
-	user_modify,
-	user_delete
- };

@@ -13,14 +13,14 @@ async function auth(context: Oak.Context, next: Function) {
 	const auth = context.request.headers.get("Authorization");
 	if (!auth) {
 		context.response.status = HTTP.Status.Unauthorized;
-		context.response.body = { message: "No Authorization header found" };
+		context.response.body = { message: "No valid Authorization header found" };
 		return;
 	}
 	const jwt = auth.replace("Bearer ", "");
 	try {
-		const data = djwt.verify(jwt, key)
+		const data = djwt.verify(jwt, key);
 	} catch {
-		console.log("error")
+		console.log("error: jwt verify failed")
 	}
 	await next();
 }
