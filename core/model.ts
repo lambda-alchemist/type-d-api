@@ -43,7 +43,7 @@ const UserSchemaFull = Zod.object({
 	pass: Zod.string().min(12, invalid_pass)
 });
 
-const UserSignUp = ({
+const UserSignUp = Zod.object({
 	name: Zod.string().min(8, invalid_name),
 	mail: Zod.string().email(invalid_mail),
 	pass: Zod.string().min(8, invalid_pass)
@@ -62,5 +62,6 @@ export {
 	User,
 	Task,
 	UserSchemaFull,
+	UserSignUp,
 	TaskSchemaFull
 };

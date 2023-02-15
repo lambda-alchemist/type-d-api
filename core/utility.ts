@@ -1,23 +1,30 @@
-import * as Oak   from "land:oak";
-import * as djwt  from "land:djwt";
-import * as HTTP  from "std:status";
-import * as Color from "std:color";
+import * as Oak     from "land:oak";
+import * as djwt    from "land:djwt";
+import * as HTTP    from "std:status";
+import * as Color   from "std:color";
 
-async function auth(context: Oak.Context, next: VoidFunction) {
+const key = await crypto.subtle.generateKey(
+	{ name: "HMAC", hash: "SHA-512" },
+	true,
+	["sign", "verify"],
+)
+
+async function auth(context: Oak.Context, next: Function) {
 	const auth = context.request.headers.get("Authorization");
 	if (!auth) {
 		context.response.status = HTTP.Status.Unauthorized;
-		context.response.body = { message: "Not Authorized" };
+		context.response.body = { message: "No Authorization header found" };
 		return;
 	}
 	const jwt = auth.replace("Bearer ", "");
 	try {
-		const data = djwt.verify(jwt, jwt_key)
+		const data = djwt.verify(jwt, key)
 	} catch {
 		console.log("error")
 	}
 	await next();
 }
+
 async function json(context: Oak.Context, next: Function) {
 	context.response.headers.set("Content-Type", "application/json");
 	if (context.request.headers.get("Content-Type") !== "application/json") {
