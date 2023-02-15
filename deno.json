@@ -18,14 +18,13 @@
 	"imports": {
 		"land:denodb": "https://deno.land/x/denodb@v1.2.0/mod.ts",
 		"land:oak":    "https://deno.land/x/oak@v11.1.0/mod.ts",
-		"land:zod":    "https://deno.land/x/zod@v3.20.2/mod.ts",
 		"land:djwt":   "https://deno.land/x/djwt@v2.8/mod.ts",
 		"land:bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
 
-		"std:color":  "https://deno.land/std@v0.176.0/fmt/colors.ts",
-		"std:dotenv": "https://deno.land/std@v0.176.0/dotenv/mod.ts",
-		"std:status": "https://deno.land/std@v0.176.0/http/http_status.ts",
-		"std:uuid":   "https://deno.land/std@v0.176.0/uuid/mod.ts",
+		"std:color":  "https://deno.land/std@v0.177.0/fmt/colors.ts",
+		"std:dotenv": "https://deno.land/std@v0.177.0/dotenv/mod.ts",
+		"std:status": "https://deno.land/std@v0.177.0/http/http_status.ts",
+		"std:uuid":   "https://deno.land/std@v0.177.0/uuid/mod.ts",
 
 		"self:model":   "./core/model.ts",
 		"self:crud":    "./core/crud.ts",

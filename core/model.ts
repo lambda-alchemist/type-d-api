@@ -1,5 +1,4 @@
 import * as ORM from "land:denodb";
-import * as Zod from "land:zod";
 
 const sqlite = new ORM.SQLite3Connector({ filepath: './db.sqlite3' });
 const db = new ORM.Database(sqlite);
@@ -31,37 +30,16 @@ class Task extends ORM.Model {
 	}
 }
 
-const invalid_uuid = { message: "Invalid UUID format, make sure your UUID string is." };
-const invalid_name = { message: "Username must be atleast 8 characters long." };
-const invalid_pass = { message: "Password must be atleast 12 characters long." };
-const invalid_mail = { message: "Invalid email address inserted, make sure your email is correct." }
-
-const UserSchemaFull = Zod.object({
-	uuid: Zod.string().uuid(invalid_uuid),
-	name: Zod.string().min(8, invalid_name),
-	mail: Zod.string().email(invalid_mail),
-	pass: Zod.string().min(12, invalid_pass)
-});
-
-const UserSignUp = Zod.object({
-	name: Zod.string().min(8, invalid_name),
-	mail: Zod.string().email(invalid_mail),
-	pass: Zod.string().min(8, invalid_pass)
-})
-
-const TaskSchemaFull = Zod.z.object({
-	uuid: Zod.string().uuid(invalid_uuid),
-	name: Zod.string().min(8, invalid_name),
-	mail: Zod.string().email(invalid_mail),
-	stat: Zod.boolean().default(false)
-});
+type SchemaUserSignUp = {
+	username: string,
+	email: string,
+	password: string
+}
 
 db.link([User, Task]);
-await db.sync();
+await db.sync({ drop: true });
 export {
 	User,
 	Task,
-	UserSchemaFull,
-	UserSignUp,
-	TaskSchemaFull
+	type SchemaUserSignUp
 };

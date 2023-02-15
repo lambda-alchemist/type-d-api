@@ -6,17 +6,34 @@ import * as Model  from "self:model";
 
 const json: Oak.BodyOptions<"json"> = { type: "json" }
 
+async function signup(context : Oak.Context) {
+	const body: Model.SchemaUserSignUp = await context.request.body(json).value;
+	const uuid = crypto.randomUUID();
+	const { password } = body;
+	const hash = await bcrypt.hash(password);
+	await Model.User.create({
+		uuid: uuid,
+		name: body.username,
+		mail: body.email,
+		pass: hash
+	})
+	context.response.status = HTTP.Status.Created;
+	context.response.body = {
+		message: "Succefully created user",
+		data: {
+			uuid: uuid,
+			name: body.username,
+			mail: body.email
+		}
+	}
+}
+
 async function login(context : Oak.Context) {
 	const body = await context.request.body(json).value;
 
 }
 
 async function logout(context : Oak.Context) {
-	const body = await context.request.body(json).value;
-
-}
-
-async function signup(context : Oak.Context) {
 	const body = await context.request.body(json).value;
 
 }

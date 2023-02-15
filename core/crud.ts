@@ -22,7 +22,7 @@ async function user_create(context: Oak.Context) {
 	const uuid = crypto.randomUUID()
 	const hash = await bcrypt.hash(password);
 	const user = new Model.User();
-		user.id       = uuid,
+		user.uuid     = uuid,
 		user.name     = name,
 		user.password = hash
 	await user.save();
