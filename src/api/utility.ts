@@ -18,7 +18,7 @@ async function auth(context: Oak.Context, next: Function) {
 	}
 	const jwt = auth.replace("Bearer ", "");
 	try {
-		const data = djwt.verify(jwt, key);
+		const payload = djwt.verify(jwt, key);
 	} catch {
 		console.log("error: jwt verify failed")
 	}

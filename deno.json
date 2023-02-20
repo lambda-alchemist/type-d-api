@@ -26,10 +26,12 @@
 		"std:status": "https://deno.land/std@v0.177.0/http/http_status.ts",
 		"std:uuid":   "https://deno.land/std@v0.177.0/uuid/mod.ts",
 
-		"self:model":   "./core/model.ts",
-		"self:crud":    "./core/crud.ts",
-		"self:auth":    "./core/auth.ts",
-		"self:control": "./core/router.ts",
-		"self:utility": "./core/utility.ts"
+		"api:model":   "./src/api/model.ts",
+		"api:crud":    "./src/api/crud.ts",
+		"api:auth":    "./src/api/auth.ts",
+		"api:control": "./src/api/router.ts",
+		"api:utility": "./src/api/utility.ts",
+		"html:router": "./src/client/router.ts",
+		"html:pages/": "./src/client/html/"
 	}
 }

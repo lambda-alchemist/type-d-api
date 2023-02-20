@@ -1,7 +1,7 @@
 import * as Oak    from "land:oak";
 import * as bcrypt from "land:bcrypt";
 import * as HTTP   from "std:status";
-import * as Model  from "self:model";
+import * as Model  from "api:model";
 
 const json: Oak.BodyOptions<"json"> = { type: "json" };
 

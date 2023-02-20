@@ -1,7 +1,7 @@
 import * as Oak     from "land:oak";
-import * as Crud    from "self:crud";
-import * as Auth    from "self:auth";
-import * as Utility from "self:utility";
+import * as Crud    from "api:crud";
+import * as Auth    from "api:auth";
+import * as Utility from "api:utility";
 
 const api = new Oak.Router();
 const auth = new Oak.Router();
