@@ -3,41 +3,39 @@ import * as djwt    from "land:djwt";
 import * as HTTP    from "std:status";
 import * as Color   from "std:color";
 
-// const key = await crypto.subtle.generateKey(
-// 	{ name: "HMAC", hash: "SHA-512" },
-// 	true,
-// 	["sign", "verify"],
-// );
+const key = await crypto.subtle.generateKey(
+	{ name: "HMAC", hash: "SHA-512" },
+	true,
+	["sign", "verify"],
+);
 
-// async function auth(context: Oak.Context, next: Function) {
-// 	const auth = context.request.headers.get("Authorization");
-// 	if (!auth) {
-// 		context.response.status = HTTP.Status.Unauthorized;
-// 		context.response.body = { message: "No valid Authorization header found" };
-// 		return;
-// 	}
-// 	const jwt = auth.replace("Bearer ", "");
-// 	try {
-// 		const payload = djwt.verify(jwt, key);
-// 	} catch {
-// 		console.log("error: jwt verify failed")
-// 	}
-// 	await next();
-// }
+export async function auth(context: Oak.Context, next: Function) {
+	const auth = context.request.headers.get("Authorization");
+	if (!auth) {
+		context.response.status = HTTP.Status.Unauthorized;
+		context.response.body = { message: "No valid Authorization header found" };
+		return;
+	}
+	const jwt = auth.replace("Bearer ", "");
 
-// async function json(context: Oak.Context, next: Function) {
-// 	context.response.headers.set("Content-Type", "application/json");
-// 	if (context.request.headers.get("Content-Type") !== "application/json") {
-// 		context.response.status = 400;
-// 		context.response.body = {
-// 			error: "Invalid Content-Type, only application/json is accepted"
-// 		};
-// 		return;
-// 	}
-// 	await next();
-// }
+	// awaiting
 
-async function logger(context: Oak.Context, next: Function) {
+	await next();
+}
+
+export async function json(context: Oak.Context, next: Function) {
+	context.response.headers.set("Content-Type", "application/json");
+	if (context.request.headers.get("Content-Type") !== "application/json") {
+		context.response.status = 400;
+		context.response.body = {
+			error: "Invalid Content-Type, only application/json is accepted"
+		};
+		return;
+	}
+	await next();
+}
+
+export async function logger(context: Oak.Context, next: Function) {
 	await next();
 	const date   = new Date().toISOString();
 	const host   = context.request.url.hostname;
@@ -49,5 +47,3 @@ async function logger(context: Oak.Context, next: Function) {
 		+ `${host} ${status} ${method} ${path}`;
 	console.log(text);
 }
-
-export { logger };

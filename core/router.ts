@@ -9,34 +9,14 @@ const auth = new Oak.Router();
 const task = new Oak.Router();
 const user = new Oak.Router();
 
-const lander: Oak.ContextSendOptions = {
-	root: "./pages/",
-	index: "index.html",
-	immutable: false,
-	path: "index.html"
-}
-const singin: Oak.ContextSendOptions = {
-	root: "./pages/",
-	index: "index.html",
-	immutable: false,
-	path: "login.html"
-}
-const signup: Oak.ContextSendOptions = {
-	root: "./pages/",
-	index: "index.html",
-	immutable: false,
-	path: "signup.html"
-}
-const tasker: Oak.ContextSendOptions = {
-	root: "./pages/",
-	index: "index.html",
-	immutable: false,
-	path: "tasker.html"
-}
+const landing: Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/pages`, path: "index.html" }
+const login:   Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/pages`, path: "login.html" }
+const signup:  Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/pages`, path: "signup.html" }
+const tasker:  Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/pages`, path: "tasker.html" }
 
 html
-	.get("/",       async context => await context.send(lander))
-	.get("/login",  async context => await context.send(singin))
+	.get("/",       async context => await context.send(landing))
+	.get("/login",  async context => await context.send(login))
 	.get("/signup", async context => await context.send(signup))
 	.get("/tasker", async context => await context.send(tasker))
 
@@ -46,6 +26,8 @@ auth
 	.post("/signup", async context => await Auth.signup(context))
 
 user
+	.use   (Utility.auth)
+	.use   (Utility.json)
 	.get   ("/user",     async context => await Crud.user_list(context))
 	.post  ("/user",     async context => await Crud.user_create(context))
 	.get   ("/user/:id", async context => await Crud.user_retrieve(context))
@@ -54,6 +36,8 @@ user
 	.delete("/user/:id", async context => await Crud.user_delete(context))
 
 task
+	.use   (Utility.auth)
+	.use   (Utility.json)
 	.get   ("/task",     async context => await Crud.task_list(context))
 	.post  ("/task",     async context => await Crud.task_create(context))
 	.get   ("/task/:id", async context => await Crud.task_retrieve(context))
