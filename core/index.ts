@@ -9,10 +9,10 @@ const listen
 
 const app = new Oak.Application();
 
+// app.use(Utility.json);
 app.use(Utility.logger);
-app.use(Utility.json);
-app.use(Controller.api.routes());
-app.use(Controller.api.allowedMethods());
+app.use(Controller.app.routes());
+app.use(Controller.app.allowedMethods());
 
 app.addEventListener(
 	"listen", ({ secure, hostname, port }: typeof listen) => {

@@ -9,34 +9,36 @@ const auth = new Oak.Router();
 const task = new Oak.Router();
 const user = new Oak.Router();
 
-const page = {
-	lander: {
-		root: "./pages",
-		index: "index.html",
-		immutable: false
-	} satisfies Oak.SendOptions,
-	singin: {
-		root: "./pages",
-		index: "index.html",
-		immutable: false
-	} satisfies Oak.SendOptions,
-	signup: {
-		root: "./pages",
-		index: "index.html",
-		immutable: false
-	} satisfies Oak.SendOptions,
-	tasker: {
-		root: "./pages",
-		index: "index.html",
-		immutable: false
-	} satisfies Oak.SendOptions,
+const lander: Oak.ContextSendOptions = {
+	root: "./pages/",
+	index: "index.html",
+	immutable: false,
+	path: "index.html"
+}
+const singin: Oak.ContextSendOptions = {
+	root: "./pages/",
+	index: "index.html",
+	immutable: false,
+	path: "login.html"
+}
+const signup: Oak.ContextSendOptions = {
+	root: "./pages/",
+	index: "index.html",
+	immutable: false,
+	path: "signup.html"
+}
+const tasker: Oak.ContextSendOptions = {
+	root: "./pages/",
+	index: "index.html",
+	immutable: false,
+	path: "tasker.html"
 }
 
 html
-	.get("/lander", async context => await context.send(page.lander))
-	.get("/login",  async context => await context.send(page.singin))
-	.get("/signup", async context => await context.send(page.signup))
-	.get("/tasker", async context => await context.send(page.tasker))
+	.get("/",       async context => await context.send(lander))
+	.get("/login",  async context => await context.send(singin))
+	.get("/signup", async context => await context.send(signup))
+	.get("/tasker", async context => await context.send(tasker))
 
 auth
 	.post("/login",  async context => await Auth.login(context))
@@ -60,7 +62,7 @@ task
 	.delete("/task/:id", async context => await Crud.task_delete(context))
 
 app
-	.use("/page",     html.routes(), html.allowedMethods())
+	.use("",          html.routes(), html.allowedMethods())
 	.use("/api/auth", auth.routes(), auth.allowedMethods())
 	.use("/api/crud", user.routes(), user.allowedMethods())
 	.use("/api/crud", task.routes(), task.allowedMethods())
