@@ -1,7 +1,7 @@
 import * as Color       from "std:color";
 import * as Oak         from "land:oak";
-import * as Controller  from "api:control";
-import * as Utility     from "api:utility";
+import * as Controller  from "app:control";
+import * as Utility     from "app:utility";
 
 const listen
 	: { secure: boolean, hostname: string,      port: number }

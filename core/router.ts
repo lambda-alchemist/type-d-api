@@ -1,12 +1,42 @@
 import * as Oak     from "land:oak";
-import * as Crud    from "api:crud";
-import * as Auth    from "api:auth";
-import * as Utility from "api:utility";
+import * as Crud    from "app:crud";
+import * as Auth    from "app:auth";
+import * as Utility from "app:utility";
 
-const api = new Oak.Router();
+const app  = new Oak.Router();
+const html = new Oak.Router();
 const auth = new Oak.Router();
 const task = new Oak.Router();
 const user = new Oak.Router();
+
+const page = {
+	lander: {
+		root: "./pages",
+		index: "index.html",
+		immutable: false
+	} satisfies Oak.SendOptions,
+	singin: {
+		root: "./pages",
+		index: "index.html",
+		immutable: false
+	} satisfies Oak.SendOptions,
+	signup: {
+		root: "./pages",
+		index: "index.html",
+		immutable: false
+	} satisfies Oak.SendOptions,
+	tasker: {
+		root: "./pages",
+		index: "index.html",
+		immutable: false
+	} satisfies Oak.SendOptions,
+}
+
+html
+	.get("/lander", async context => await context.send(page.lander))
+	.get("/login",  async context => await context.send(page.singin))
+	.get("/signup", async context => await context.send(page.signup))
+	.get("/tasker", async context => await context.send(page.tasker))
 
 auth
 	.post("/login",  async context => await Auth.login(context))
@@ -29,9 +59,10 @@ task
 	.put   ("/task/:id", async context => await Crud.task_update(context))
 	.delete("/task/:id", async context => await Crud.task_delete(context))
 
-api
-	.use("/auth", auth.routes(), auth.allowedMethods())
-	.use("/crud", user.routes(), user.allowedMethods())
-	.use("/crud", task.routes(), task.allowedMethods())
+app
+	.use("/page",     html.routes(), html.allowedMethods())
+	.use("/api/auth", auth.routes(), auth.allowedMethods())
+	.use("/api/crud", user.routes(), user.allowedMethods())
+	.use("/api/crud", task.routes(), task.allowedMethods())
 
-export { api }
+export { app }
