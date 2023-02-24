@@ -9,16 +9,18 @@ const auth = new Oak.Router();
 const task = new Oak.Router();
 const user = new Oak.Router();
 
-const landing: Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/pages`, path: "index.html" }
-const login:   Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/pages`, path: "login.html" }
-const signup:  Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/pages`, path: "signup.html" }
-const tasker:  Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/pages`, path: "tasker.html" }
+const landing: Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/pages`,  path: "index.html" }
+const login:   Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/pages`,  path: "login.html" }
+const signup:  Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/pages`,  path: "signup.html" }
+const tasker:  Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/pages`,  path: "tasker.html" }
+const logo:    Oak.ContextSendOptions = { root: `${Deno.cwd()}/core/static`, path: "gear-logo.png" }
 
 html
 	.get("/",       async context => await context.send(landing))
 	.get("/login",  async context => await context.send(login))
 	.get("/signup", async context => await context.send(signup))
 	.get("/tasker", async context => await context.send(tasker))
+	.get("/logo",   async context => await context.send(logo))
 
 auth
 	.post("/login",  async context => await Auth.login(context))

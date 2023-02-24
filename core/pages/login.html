@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Login Form</title>
+		<!-- Bootstrap 5 CSS -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+		/>
+		<!-- Custom CSS -->
+		<style>
+			.card {
+				border-radius: 10px;
+				box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+			}
+			.card-title {
+				margin-bottom: 1.5rem;
+			}
+			.form-group label {
+				font-weight: bold;
+			}
+			.btn-primary {
+				background-color: #007bff;
+				border-color: #007bff;
+			}
+			.btn-primary:hover {
+				background-color: #0069d9;
+				border-color: #0062cc;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 mx-auto mt-5">
+					<div class="card">
+						<div class="card-body">
+							<h3 class="card-title text-center">Login</h3>
+							<form action="" method="post">
+								<div class="mb-3">
+									<label for="email" class="form-label">Email address</label>
+									<input
+										type="email"
+										class="form-control"
+										id="email"
+										name="email"
+										required
+									/>
+								</div>
+								<div class="mb-3">
+									<label for="password" class="form-label">Password</label>
+									<input
+										type="password"
+										class="form-control"
+										id="password"
+										name="password"
+										required
+									/>
+								</div>
+								<button type="submit" class="btn btn-lg btn-primary w-100">
+									Login
+								</button>
+							</form>
+							<div class="text-center mt-3">
+								Not yet registered? <a href="/signup">Signup here</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Bootstrap 5 JS -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+		<!-- Custom JS -->
+		<script>
+			const loginForm = document.getElementById("login-form");
+			loginForm.addEventListener("submit", (e) => {
+				e.preventDefault();
+				const email = document.getElementById("email").value;
+				const password = document.getElementById("password").value;
+				// Replace the following lines with your actual login logic
+				if (email === "example@example.com" && password === "password") {
+					alert("Login successful!");
+				} else {
+					alert("Invalid email or password. Please try again.");
+				}
+			});
+		</script>
+	</body>
+</html>
