@@ -21,13 +21,14 @@ class Task extends ORM.Model {
 	static table = "Task";
 	static timestamps = true;
 	static fields = {
-		uuid:         { type: ORM.DataTypes.UUID,    primaryKey: true },
-		title:        { type: ORM.DataTypes.STRING,  length: 127 },
-		completed:    { type: ORM.DataTypes.BOOLEAN  },
+		uuid:         { type: ORM.DataTypes.UUID,     primaryKey: true },
+		// owner:        { type: ORM.DataTypes.UUID,    foreignKey: true },
+		title:        { type: ORM.DataTypes.STRING,   length: 127 },
+		completed:    { type: ORM.DataTypes.BOOLEAN   },
 		completed_at: { type: ORM.DataTypes.DATETIME, allowNull: true },
-		due_date:     { type: ORM.DataTypes.DATETIME }
+		due_date:     { type: ORM.DataTypes.DATETIME  }
 	};
-	static user() {
+	static owner() {
 		return this.hasOne(User);
 	}
 }
