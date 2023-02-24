@@ -6,6 +6,11 @@ import * as Model  from "app:model";
 
 const json: Oak.BodyOptions<"json"> = { type: "json" }
 
+function generateToken(user: any) {
+  const token = JWT.create(); // TODO: finish
+  return token;
+}
+
 async function signup(context : Oak.Context) {
 	const body: Model.SchemaUserSignUp = await context.request.body(json).value;
 	const uuid = crypto.randomUUID();
@@ -31,15 +36,31 @@ async function signup(context : Oak.Context) {
 async function login(context : Oak.Context) {
 	const body = await context.request.body(json).value;
 
-}
+	const user = await Model.User.where("email", body.email).get();
+	if (!user) {
+		context.response.status = HTTP.Status.Unauthorized;
+		context.response.body = {
+			message: "Invalid email or password"
+		};
+		return;
+	}
 
-async function logout(context : Oak.Context) {
-	const body = await context.request.body(json).value;
+	const hashedPassword = await bcrypt.hash(user.password);
+
+	const passwordMatch = await bcrypt.compare(body.password, hashedPassword);
+	if (!passwordMatch) {
+		context.response.status = HTTP.Status.Unauthorized;
+		context.response.body = {
+			message: "Invalid email or password"
+		};
+		return;
+	}
+
+	// Missing token final
 
 }
 
 export {
 	login,
-	logout,
 	signup
 }

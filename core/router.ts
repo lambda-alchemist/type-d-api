@@ -24,7 +24,6 @@ html
 
 auth
 	.post("/login",  async context => await Auth.login(context))
-	.post("/logout", async context => await Auth.logout(context))
 	.post("/signup", async context => await Auth.signup(context))
 
 user
