@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Signup Form</title>
+		<title>Type-d APP</title>
 		<!-- Bootstrap 5 CSS -->
 		<link
 			rel="stylesheet"
@@ -27,10 +27,15 @@
 								/>
 							</a>
 							<h3 class="card-title text-center">Signup</h3>
-							<form action="" method="post">
+							<form id="signup-form" action="/" method="post">
 								<div class="mb-3">
 									<label for="name">Name</label>
-									<input type="text" id="name" class="form-control" required />
+									<input
+										type="text"
+										id="name"
+										class="form-control"
+										required
+									/>
 								</div>
 								<div class="mb-3">
 									<label for="email">Email</label>
@@ -77,14 +82,44 @@
 		<!-- Custom JS -->
 		<script>
 			const signupForm = document.getElementById("signup-form");
-			signupForm.addEventListener("submit", (event) => {
+			signupForm.addEventListener(
+			"submit", async (event) => {
 				event.preventDefault();
 				const name = document.getElementById("name").value;
 				const email = document.getElementById("email").value;
 				const password = document.getElementById("password").value;
-				const confirmPassword =
-					document.getElementById("confirm-password").value;
-				// TODO: Finish signup logic
+				const passwordConfirm = document.getElementById("confirm-password").value;
+				if (
+					name == null ||
+					email == null ||
+					password == null ||
+					passwordConfirm == null ||
+					name === "" ||
+					email === "" ||
+					password === "" ||
+					passwordConfirm === ""
+				) {
+					window.location.href = "error.html"
+				}
+				const headers = {
+					"Content-Type": "application/json"
+				}
+
+				const body = JSON.stringify({
+					username: name,
+					email: email,
+					password: password
+				});
+
+				const response = await fetch("/api/auth/signup", {
+					method: "POST",
+					body: body,
+					headers: headers
+				});
+
+				const data = await response.text();
+
+				console.log(data);
 			});
 		</script>
 	</body>

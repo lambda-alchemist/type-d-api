@@ -1,7 +1,6 @@
 import * as Oak     from "land:oak";
 import * as Crud    from "app:crud";
 import * as Auth    from "app:auth";
-import * as Utility from "app:utility";
 
 const app  = new Oak.Router();
 const html = new Oak.Router();
@@ -27,8 +26,6 @@ auth
 	.post("/signup", async context => await Auth.signup(context))
 
 user
-	.use   (Utility.auth)
-	.use   (Utility.json)
 	.get   ("/user",     async context => await Crud.user_list(context))
 	.post  ("/user",     async context => await Crud.user_create(context))
 	.get   ("/user/:id", async context => await Crud.user_retrieve(context))
@@ -37,8 +34,6 @@ user
 	.delete("/user/:id", async context => await Crud.user_delete(context))
 
 task
-	.use   (Utility.auth)
-	.use   (Utility.json)
 	.get   ("/task",     async context => await Crud.task_list(context))
 	.post  ("/task",     async context => await Crud.task_create(context))
 	.get   ("/task/:id", async context => await Crud.task_retrieve(context))

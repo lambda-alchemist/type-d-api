@@ -14,6 +14,13 @@ const crypto_key = await crypto.subtle.generateKey(
 
 async function signup(context : Oak.Context) {
 	const body: Model.SchemaUserSignUp = await context.request.body(json).value;
+	const user = await Model.User.where("email", body.email).get();
+	if (user) {
+		context.response.status = HTTP.Status.BadRequest;
+		context.response.body = {
+			message: "Email already registered, try again."
+		}
+	}
 	const data = {
 		uuid:     crypto.randomUUID(),
 		email:    body.email,
@@ -37,16 +44,16 @@ async function login(context: Oak.Context) {
 	if (!user) {
 		context.response.status = HTTP.Status.Unauthorized;
 		context.response.body = {
-			message: "Invalid email or password"
+			message: "Invalid email or password1"
 		};
 		return;
 	}
-	const password = await bcrypt.hash(user.password);
-	const password_match = await bcrypt.compare(body.password, password);
+	const hash = await bcrypt.hash(user.password);
+	const password_match = await bcrypt.compare(body.password, hash);
 	if (!password_match) {
 		context.response.status = HTTP.Status.Unauthorized;
 		context.response.body = {
-			message: "Invalid email or password"
+			message: "Invalid email or password2"
 		};
 		return;
 	}

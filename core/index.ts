@@ -9,7 +9,6 @@ const listen
 
 const app = new Oak.Application();
 
-// app.use(Utility.json);
 app.use(Utility.logger);
 app.use(Controller.app.routes());
 app.use(Controller.app.allowedMethods());
