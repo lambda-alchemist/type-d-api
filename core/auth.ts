@@ -6,36 +6,33 @@ import * as Model  from "app:model";
 
 const json: Oak.BodyOptions<"json"> = { type: "json" }
 
-function generateToken(user: any) {
-  const token = JWT.create(); // TODO: finish
-  return token;
-}
+const crypto_key = await crypto.subtle.generateKey(
+	{ name: "HMAC", hash: "SHA-512" },
+	true,
+	["sign", "verify"],
+);
 
 async function signup(context : Oak.Context) {
 	const body: Model.SchemaUserSignUp = await context.request.body(json).value;
-	const uuid = crypto.randomUUID();
-	const { password } = body;
-	const hash = await bcrypt.hash(password);
-	await Model.User.create({
-		uuid:     uuid,
+	const data = {
+		uuid:     crypto.randomUUID(),
 		email:    body.email,
 		username: body.username,
-		password: hash
-	})
+		password: await bcrypt.hash(body.password)
+	}
+	await Model.User.create(data)
 	context.response.status = HTTP.Status.Created;
 	context.response.body = {
 		message: "Succefully created user",
 		data: {
-			uuid:     uuid,
 			email:    body.email,
 			username: body.username
 		}
 	}
 }
 
-async function login(context : Oak.Context) {
-	const body = await context.request.body(json).value;
-
+async function login(context: Oak.Context) {
+	const body: Model.SchemaUserLogIn = await context.request.body(json).value;
 	const user = await Model.User.where("email", body.email).get();
 	if (!user) {
 		context.response.status = HTTP.Status.Unauthorized;
@@ -44,11 +41,9 @@ async function login(context : Oak.Context) {
 		};
 		return;
 	}
-
-	const hashedPassword = await bcrypt.hash(user.password);
-
-	const passwordMatch = await bcrypt.compare(body.password, hashedPassword);
-	if (!passwordMatch) {
+	const password = await bcrypt.hash(user.password);
+	const password_match = await bcrypt.compare(body.password, password);
+	if (!password_match) {
 		context.response.status = HTTP.Status.Unauthorized;
 		context.response.body = {
 			message: "Invalid email or password"
@@ -56,8 +51,23 @@ async function login(context : Oak.Context) {
 		return;
 	}
 
-	// Missing token final
+	const token = await JWT.create(
+		{
+			alg: "HS256",
+			typ: "JWT"
+		},
+		{
+			sub: user.uuid,
+			exp: JWT.getNumericDate(60 * 60),
+		},
+		crypto_key
+	);
 
+	context.cookies.set("jwt", token);
+	context.response.status = HTTP.Status.OK;
+	context.response.body = {
+		message: "Successfully logged in"
+	};
 }
 
 export {

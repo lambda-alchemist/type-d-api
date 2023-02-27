@@ -39,10 +39,16 @@ type SchemaUserSignUp = {
 	password: string
 }
 
+type SchemaUserLogIn = {
+	email: string,
+	password: string
+}
+
 db.link([User, Task]);
 await db.sync({ drop: true });
 export {
 	User,
 	Task,
-	type SchemaUserSignUp
+	type SchemaUserSignUp,
+	type SchemaUserLogIn
 };

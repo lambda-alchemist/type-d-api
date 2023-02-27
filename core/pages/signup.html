@@ -16,7 +16,10 @@
 				<div class="col-md-6 mx-auto mt-5">
 					<div class="card">
 						<div class="card-body">
-							<a href="/" class="d-flex align-items-center justify-content-center">
+							<a
+								href="/"
+								class="d-flex align-items-center justify-content-center"
+							>
 								<img
 									src="/logo"
 									alt="Lambda Alkemist Logo"
@@ -76,10 +79,11 @@
 			const signupForm = document.getElementById("signup-form");
 			signupForm.addEventListener("submit", (event) => {
 				event.preventDefault();
-				const name            = document.getElementById("name").value;
-				const email           = document.getElementById("email").value;
-				const password        = document.getElementById("password").value;
-				const confirmPassword = document.getElementById("confirm-password").value;
+				const name = document.getElementById("name").value;
+				const email = document.getElementById("email").value;
+				const password = document.getElementById("password").value;
+				const confirmPassword =
+					document.getElementById("confirm-password").value;
 				// TODO: Finish signup logic
 			});
 		</script>
