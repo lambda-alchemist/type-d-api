@@ -22,8 +22,8 @@ html
 	.get("/",       async context => await context.send(landing))
 	.get("/login",  async context => await context.send(login))
 	.get("/signup", async context => await context.send(signup))
-	.get("/tasker", async context => await context.send(lister))
-	.get("/tasker", async context => await context.send(maker))
+	.get("/lister", async context => await context.send(lister))
+	.get("/maker",  async context => await context.send(maker))
 	.get("/logo",   async context => await context.send(logo))
 
 auth

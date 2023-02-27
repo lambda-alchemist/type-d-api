@@ -2,9 +2,53 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Type-d APP</title>
+		<title>Todo List - ChatGPT</title>
+		<!-- Bootstrap 5 CSS -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+		/>
+		<!-- Bootstrap 5 JS -->
+		<script
+			defer
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		></script>
 	</head>
-	<body></body>
+	<body>
+		<div class="container">
+			<h1 class="text-center mt-5">Todo List</h1>
+			<div class="row mt-5">
+				<div class="col-md-6 mx-auto">
+					<ul class="list-group" id="todo-list"></ul>
+				</div>
+			</div>
+		</div>
+		<script>
+			const todoList = document.querySelector('#todo-list');
+
+			const token = "your-jwt-token-here";
+
+			fetch("https://your-todo-api.com/tasks", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					data.forEach((task) => {
+						const todoItem = createTodoItem(task.description);
+						todoList.appendChild(todoItem);
+					});
+				})
+				.catch((error) => console.error(error));
+
+			function createTodoItem(text) {
+				const todoItem = document.createElement("li");
+				todoItem.classList.add("list-group-item");
+				todoItem.innerText = text;
+				return todoItem;
+			}
+		</script>
+	</body>
 </html>
