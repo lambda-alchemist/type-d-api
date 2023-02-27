@@ -78,14 +78,14 @@
 		</div>
 		<!-- Custom JS -->
 		<script type="module">
-			const signupForm = document.getElementById("signup-form");
+			const signupForm = document.querySelector('#signup-form');
 			signupForm.addEventListener(
 				"submit", async (event) => {
 					event.preventDefault();
-					const name = document.getElementById("name").value;
-					const email = document.getElementById("email").value;
-					const password = document.getElementById("password").value;
-					const passwordConfirm = document.getElementById("confirm-password").value;
+					const name = document.querySelector('#name').value;
+					const email = document.querySelector('#email').value;
+					const password = document.querySelector('#password').value;
+					const passwordConfirm = document.querySelector('#confirm-password').value;
 
 					const headers = {
 						"Content-Type": "application/json"
@@ -103,8 +103,9 @@
 						headers: headers
 					});
 
-					const data = await response.text();
-					console.log(data);
+					if ( response.status >= 200 && response.status <= 226 ) {
+						window.location.replace('/login');
+					}
 				}
 			);
 		</script>

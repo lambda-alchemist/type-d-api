@@ -1,16 +1,11 @@
-import * as Oak    from "land:oak";
-import * as bcrypt from "land:bcrypt";
-import * as JWT    from "land:djwt"
-import * as HTTP   from "std:status";
-import * as Model  from "app:model";
+import * as Oak     from "land:oak";
+import * as bcrypt  from "land:bcrypt";
+import * as JWT     from "land:djwt"
+import * as HTTP    from "std:status";
+import * as Model   from "app:model";
+import * as Utility from "app:utility"
 
 const json: Oak.BodyOptions<"json"> = { type: "json" }
-
-const crypto_key = await crypto.subtle.generateKey(
-	{ name: "HMAC", hash: "SHA-512" },
-	true,
-	["sign", "verify"],
-);
 
 async function signup(context : Oak.Context) {
 	const body: Model.SchemaUserSignUp = await context.request.body(json).value;
@@ -68,7 +63,7 @@ async function login(context: Oak.Context) {
 			sub: user.uuid?.toString(),
 			exp: JWT.getNumericDate(60 * 60),
 		},
-		crypto_key
+		Utility.crypto_key
 	);
 
 	context.cookies.set("jwt", token);

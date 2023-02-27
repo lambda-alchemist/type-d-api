@@ -3,7 +3,7 @@ import * as djwt    from "land:djwt";
 import * as HTTP    from "std:status";
 import * as Color   from "std:color";
 
-const key = await crypto.subtle.generateKey(
+export const crypto_key = await crypto.subtle.generateKey(
 	{ name: "HMAC", hash: "SHA-512" },
 	true,
 	["sign", "verify"],

@@ -67,12 +67,12 @@
 		</div>
 		<!-- Custom JS -->
 		<script type="module">
-			const loginForm = document.getElementById("login-form");
+			const loginForm = document.querySelector('#login-form');
 			loginForm.addEventListener(
 				"submit", async (event) => {
 					event.preventDefault();
-					const email = document.getElementById("email").value;
-					const password = document.getElementById("password").value;
+					const email = document.querySelector('#email').value;
+					const password = document.querySelector('#password').value;
 
 					const headers = {
 						"Content-Type": "application/json",
@@ -89,8 +89,9 @@
 						headers: headers,
 					});
 
-					const data = await response.text();
-					console.log(data);
+					if ( response.status >= 200 && response.status <= 226 ) {
+						window.location.replace('/task-lister');
+					}
 				}
 			);
 		</script>
