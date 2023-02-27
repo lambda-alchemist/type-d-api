@@ -14,12 +14,13 @@ const crypto_key = await crypto.subtle.generateKey(
 
 async function signup(context : Oak.Context) {
 	const body: Model.SchemaUserSignUp = await context.request.body(json).value;
-	const user = await Model.User.where("email", body.email).get();
-	if (user) {
+	const count = await Model.User.where("email", body.email).count();
+	if (count !== 0) {
 		context.response.status = HTTP.Status.BadRequest;
 		context.response.body = {
 			message: "Email already registered, try again."
 		}
+		return;
 	}
 	const data = {
 		uuid:     crypto.randomUUID(),
@@ -40,7 +41,7 @@ async function signup(context : Oak.Context) {
 
 async function login(context: Oak.Context) {
 	const body: Model.SchemaUserLogIn = await context.request.body(json).value;
-	const user = await Model.User.where("email", body.email).get();
+	const user = await Model.User.where("email", body.email).first();
 	if (!user) {
 		context.response.status = HTTP.Status.Unauthorized;
 		context.response.body = {
@@ -48,8 +49,8 @@ async function login(context: Oak.Context) {
 		};
 		return;
 	}
-	const hash = await bcrypt.hash(user.password);
-	const password_match = await bcrypt.compare(body.password, hash);
+	const { password } = await Model.User.where("email", body.email).select("password").first();
+	const password_match = await bcrypt.compare(body.password, password);
 	if (!password_match) {
 		context.response.status = HTTP.Status.Unauthorized;
 		context.response.body = {
@@ -60,11 +61,11 @@ async function login(context: Oak.Context) {
 
 	const token = await JWT.create(
 		{
-			alg: "HS256",
+			alg: "HS512",
 			typ: "JWT"
 		},
 		{
-			sub: user.uuid,
+			sub: user.uuid?.toString(),
 			exp: JWT.getNumericDate(60 * 60),
 		},
 		crypto_key
