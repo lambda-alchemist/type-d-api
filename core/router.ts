@@ -8,15 +8,16 @@ const auth = new Oak.Router();
 const task = new Oak.Router();
 const user = new Oak.Router();
 
-const pages = `${Deno.cwd()}/core/pages`
-const media = `${Deno.cwd()}/core/static`
+const pages = `${Deno.cwd()}/core/pages`;
+const media = `${Deno.cwd()}/core/static`;
 
-const landing = { root: pages, path: "index.html" }
-const login   = { root: pages, path: "login.html" }
-const signup  = { root: pages, path: "signup.html" }
-const lister  = { root: pages, path: "task-lister.html" }
-const maker   = { root: pages, path: "task-maker.html" }
-const logo    = { root: media, path: "gear-logo.png" }
+const landing = { root: pages, path: "index.html" };
+const login   = { root: pages, path: "login.html" };
+const signup  = { root: pages, path: "signup.html" };
+const lister  = { root: pages, path: "lister.html" };
+const maker   = { root: pages, path: "maker.html" };
+const logo    = { root: media, path: "gear-logo.png" };
+const favicon = { root: media, path: "gear-icon.ico" };
 
 html
 	.get("/",       async context => await context.send(landing))
@@ -25,6 +26,7 @@ html
 	.get("/lister", async context => await context.send(lister))
 	.get("/maker",  async context => await context.send(maker))
 	.get("/logo",   async context => await context.send(logo))
+	.get("/fav",    async context => await context.send(favicon))
 
 auth
 	.post("/login",  async context => await Auth.login(context))
