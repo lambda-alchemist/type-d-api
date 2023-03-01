@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/png" href="/fav">
+		<link rel="icon" type="image/png" href="/fav" />
 		<title>Type-d APP</title>
 		<!-- Bootstrap 5 CSS -->
 		<link
@@ -19,28 +19,71 @@
 	</head>
 	<body>
 		<div class="container mt-5">
-  	  <div class="card">
-  	    <div class="card-header">
-  	      <h3 class="card-title">Create a New Task</h3>
-  	    </div>
-  	    <div class="card-body">
-  	      <form>
-  	        <div class="mb-3">
-  	          <label for="taskName" class="form-label">Task Name</label>
-  	          <input type="text" class="form-control" id="taskName" name="taskName">
-  	        </div>
-  	        <div class="mb-3">
-  	          <label for="description" class="form-label">Description</label>
-  	          <textarea class="form-control" id="description" name="description"></textarea>
-  	        </div>
-  	        <div class="mb-3">
-  	          <label for="dueDate" class="form-label">Due Date</label>
-  	          <input type="date" class="form-control" id="dueDate" name="dueDate">
-  	        </div>
-  	        <button type="submit" class="btn btn-primary">Create Task</button>
-  	      </form>
-  	    </div>
-  	  </div>
-  	</div>
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">Create a New Task</h3>
+				</div>
+				<div class="card-body">
+					<form id="task-form" action="/" method="post">
+						<div class="mb-3">
+							<label for="task-name" class="form-label">Task Name</label>
+							<input
+								type="text"
+								class="form-control"
+								id="task-name"
+								name="task-name"
+							/>
+						</div>
+						<div class="mb-3">
+							<label for="desc-text" class="form-label">Description</label>
+							<textarea
+								class="form-control"
+								id="desc-text"
+								name="desc-text"
+							></textarea>
+						</div>
+						<div class="mb-3">
+							<label for="due-date" class="form-label">Due Date</label>
+							<input
+								type="date"
+								class="form-control"
+								id="due-date"
+								name="due-date"
+							/>
+						</div>
+						<button type="submit" class="btn btn-primary">Create Task</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script type="module">
+			const taskForm = document.querySelector("#task-form");
+			taskForm.addEventListener(
+				"submit", async (event) => {
+					event.preventDefault();
+					const taskName = document.querySelector("#task-name").value;
+					const descText = document.querySelector("#desc-text").value;
+					const dueDate = document.querySelector("#due-date").value;
+
+					const headers = {
+						"Content-Type": "application/json",
+					}
+
+					const body = JSON.stringify({
+						name: taskName,
+						desc: descText,
+						date: dueDate
+					})
+
+					const response = await fetch(
+						"/api/crud/task", {
+							method: "POST",
+							headers: headers,
+							body: body,
+						}
+					)
+				}
+			);
+		</script>
 	</body>
 </html>

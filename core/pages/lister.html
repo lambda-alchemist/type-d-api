@@ -39,23 +39,23 @@
 		</div>
 		<!-- Custom JS -->
 		<script type="module">
-			async function renderTodoTasks(todoTasks) {
+			async function renderTodoTasks(task) {
 				const todoTasksList = document.querySelector(".list-group");
 				todoTasksList.innerHTML = "";
-				todoTasks.forEach((task) => {
-					const listItem = document.createElement("li");
-					listItem.classList.add("list-group-item");
-					listItem.textContent = task.task;
-					todoTasksList.appendChild(listItem);
-				});
+				// task.forEach((todo) => {
+				// 	const listItem = document.createElement("li");
+				// 	listItem.classList.add("list-group-item");
+				// 	listItem.innerHTML = JSON.stringify(todo);
+				// 	todoTasksList.appendChild(listItem);
+				// });
 			}
 
 			async function fetchTodoTasks() {
-				const response = await fetch("/api/crud/task");
-				const data = await response.json();
+				const response = await fetch("/api/crud/task", { method: "GET" });
+				const body = await response.json();
 				if (response.ok) {
-					const todoTasks = data.todoTasks;
-					await renderTodoTasks(todoTasks);
+					const tasks = body.data;
+					await renderTodoTasks(tasks);
 				} else {
 					console.error("Failed to fetch todo tasks:", data.message);
 				}

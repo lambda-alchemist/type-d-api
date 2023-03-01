@@ -70,10 +70,10 @@ export async function user_delete(context: Oak.Context) {
 }
 
 export async function task_list(context: Oak.Context) {
-	const size = Number(context.request.url.searchParams.get("size")) || 10;
-	const page = Number(context.request.url.searchParams.get("page")) || 1;
-	const data = await Model.User.offset((size - 1) * page).limit(size).get();
-	const total = await Model.User.count();
+	// const size = Number(context.request.url.searchParams.get("size")) || 10;
+	// const page = Number(context.request.url.searchParams.get("page")) || 1;
+	const data = await Model.Task.all();
+	const total = await Model.Task.count();
 	context.response.body = {
 		message: "Succefully listed tasks",
 		count: total,
@@ -82,13 +82,13 @@ export async function task_list(context: Oak.Context) {
 }
 
 export async function task_create(context: Oak.Context) {
-	const { name } = await context.request.body(json).value;
+	const { name, desc, date } = await context.request.body(json).value;
 	const uuid = crypto.randomUUID();
 	const stat = false;
-	const date = new Date();
 	const task = new Model.Task();
 		task.uuid         = uuid;
 		task.title        = name;
+		task.description  = desc;
 		task.completed    = stat;
 		task.completed_at = null;
 		task.due_date     = date;

@@ -24,6 +24,7 @@ class Task extends ORM.Model {
 		uuid:         { type: ORM.DataTypes.UUID,     primaryKey: true },
 		// owner:        { type: ORM.DataTypes.UUID,    foreignKey: true },
 		title:        { type: ORM.DataTypes.STRING,   length: 127 },
+		description:  { type: ORM.DataTypes.STRING,   length: 511 },
 		completed:    { type: ORM.DataTypes.BOOLEAN   },
 		completed_at: { type: ORM.DataTypes.DATETIME, allowNull: true },
 		due_date:     { type: ORM.DataTypes.DATETIME  }

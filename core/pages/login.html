@@ -85,11 +85,13 @@
 						password: password,
 					});
 
-					const response = await fetch("/api/auth/login", {
-						method: "POST",
-						body: body,
-						headers: headers,
-					});
+					const response = await fetch(
+						"/api/auth/login", {
+							method: "POST",
+							headers: headers,
+							body: body,
+						}
+					);
 
 					if ( response.status >= 200 && response.status <= 226 ) {
 						window.location.replace('/lister');
