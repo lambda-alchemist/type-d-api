@@ -42,12 +42,15 @@
 			async function renderTodoTasks(task) {
 				const todoTasksList = document.querySelector(".list-group");
 				todoTasksList.innerHTML = "";
-				// task.forEach((todo) => {
-				// 	const listItem = document.createElement("li");
-				// 	listItem.classList.add("list-group-item");
-				// 	listItem.innerHTML = JSON.stringify(todo);
-				// 	todoTasksList.appendChild(listItem);
-				// });
+				task.forEach(
+					(todo) => {
+						const listItem = document.createElement("li");
+						listItem.classList.add("list-group-item");
+						const name = `<span>${todo.title}<span/>`
+						listItem.innerHTML = `${name}`
+						todoTasksList.appendChild(listItem);
+					}
+				);
 			}
 
 			async function fetchTodoTasks() {
