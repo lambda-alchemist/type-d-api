@@ -27,5 +27,5 @@ async function fetchTodoTasks() {
 
 window.addEventListener(
 	"load",
-	await fetchTodoTasks(),
+	await fetchTodoTasks(event)
 );

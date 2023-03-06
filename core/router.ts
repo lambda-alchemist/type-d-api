@@ -9,31 +9,44 @@ const auth = new Oak.Router();
 const task = new Oak.Router();
 const user = new Oak.Router();
 
-const pages = `${Deno.cwd()}/core/pages`;
-const media = `${Deno.cwd()}/core/static`;
+const html   = `${Deno.cwd()}/core/page`;
+const pub    = `${Deno.cwd()}/core/pub`;
+const script = `${Deno.cwd()}/core/script`
 
-const page_land   = { root: pages, path: "index.html" };
-const page_login  = { root: pages, path: "login.html" };
-const page_signup = { root: pages, path: "signup.html" };
-const page_lister = { root: pages, path: "lister.html" };
-const page_maker  = { root: pages, path: "maker.html" };
-const logo     = { root: media, path: "gear-logo.png" };
-const favicon  = { root: media, path: "gear-icon.ico" };
+const pages = {
+	land:   { root: html, path: "index.html"  },
+	login:  { root: html, path: "login.html"  },
+	signup: { root: html, path: "signup.html" },
+	lister: { root: html, path: "lister.html" },
+	maker:  { root: html, path: "maker.html"  },
+}
+
+const imgs = {
+	logo:    { root: pub, path: "gear-logo.png" },
+	favicon: { root: pub, path: "gear-icon.ico" },
+}
+
+const scripts = {
+	signup: { root: script, path: "signup.js" },
+	login:  { root: script, path: "login.js"  },
+	lister: { root: script, path: "lister.js" },
+	maker:  { root: script, path: "maker.js"  },
+}
 
 page
-	.get("/",       async context => await context.send(page_land))
-	.get("/login",  async context => await context.send(page_login))
-	.get("/signup", async context => await context.send(page_signup))
-	.get("/lister", async context => await context.send(page_lister))
-	.get("/maker",  async context => await context.send(page_maker))
-	.get("/logo",   async context => await context.send(logo))
-	.get("/fav",    async context => await context.send(favicon))
+	.get("/",       async context => await context.send(pages.land))
+	.get("/login",  async context => await context.send(pages.login))
+	.get("/signup", async context => await context.send(pages.signup))
+	.get("/lister", async context => await context.send(pages.lister))
+	.get("/maker",  async context => await context.send(pages.maker))
+	.get("/logo",   async context => await context.send(imgs.logo))
+	.get("/fav",    async context => await context.send(imgs.favicon))
 
 dist
-	.get("/login",  async context => await context.send(login_form))
-	.get("/signup", async context => await context.send(signup_form))
-	.get("/lister", async context => await context.send(lister_app))
-	.get("/maker",  async context => await context.send(maker_app))
+	.get("/login",  async context => await context.send(scripts.login))
+	.get("/signup", async context => await context.send(scripts.signup))
+	.get("/lister", async context => await context.send(scripts.lister))
+	.get("/maker",  async context => await context.send(scripts.maker))
 
 auth
 	.post("/login",  async context => await Auth.login(context))
@@ -57,6 +70,7 @@ task
 
 app
 	.use("",          page.routes(), page.allowedMethods())
+	.use("/js",       dist.routes(), dist.allowedMethods())
 	.use("/api/auth", auth.routes(), auth.allowedMethods())
 	.use("/api/crud", user.routes(), user.allowedMethods())
 	.use("/api/crud", task.routes(), task.allowedMethods())
