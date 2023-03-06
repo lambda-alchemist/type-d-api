@@ -15,10 +15,11 @@ const script = `${Deno.cwd()}/core/script`
 
 const pages = {
 	land:   { root: html, path: "index.html"  },
-	login:  { root: html, path: "login.html"  },
 	signup: { root: html, path: "signup.html" },
-	lister: { root: html, path: "lister.html" },
+	login:  { root: html, path: "login.html"  },
 	maker:  { root: html, path: "maker.html"  },
+	lister: { root: html, path: "lister.html" },
+	tasker: { root: html, path: "tasker.html" },
 }
 
 const imgs = {
@@ -35,10 +36,11 @@ const scripts = {
 
 page
 	.get("/",       async context => await context.send(pages.land))
-	.get("/login",  async context => await context.send(pages.login))
 	.get("/signup", async context => await context.send(pages.signup))
-	.get("/lister", async context => await context.send(pages.lister))
+	.get("/login",  async context => await context.send(pages.login))
 	.get("/maker",  async context => await context.send(pages.maker))
+	.get("/lister", async context => await context.send(pages.lister))
+	.get("/tasker", async context => await context.send(pages.tasker))
 	.get("/logo",   async context => await context.send(imgs.logo))
 	.get("/fav",    async context => await context.send(imgs.favicon))
 

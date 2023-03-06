@@ -4,9 +4,11 @@ document
 	.querySelector("#task-form")
 	.addEventListener("submit", async (event) => {
 		event.preventDefault();
+
 		const taskName = document.querySelector("#task-name").value;
 		const descText = document.querySelector("#desc-text").value;
 		const dueDate = document.querySelector("#due-date").value;
+		
 		const response = await fetch(
 			"/api/crud/task", {
 				method: "POST",
