@@ -6,7 +6,7 @@ function renderTodoTasks(task) {
 	task.forEach(
 		({ uuid, title, completed }) => {
 			const li = document.createElement("li");
-			li.setAttribute("href", `/tasker?uuid=${}`);
+			li.setAttribute("href", `/tasker?uuid=${uuid}`);
 			li.classList.add("list-group-item");
 			li.classList.add("list-group-item-action");
 			if (completed) {
@@ -26,7 +26,7 @@ async function fetchTodoTasks() {
 	if (response.ok) {
 		renderTodoTasks(body.data);
 	} else {
-		console.error("Failed to fetch todo tasks:", data.message);
+		console.error("Failed to retrieve Task data, error:", data.message);
 	}
 }
 
