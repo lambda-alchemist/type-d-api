@@ -4,9 +4,9 @@ function renderTodoTasks(task) {
 	const ul = document.querySelector(".list-group");
 	ul.innerHTML = "";
 	task.forEach(
-		({ title, completed }) => {
+		({ uuid, title, completed }) => {
 			const li = document.createElement("li");
-			li.setAttribute("href", "#");
+			li.setAttribute("href", `/tasker?uuid=${}`);
 			li.classList.add("list-group-item");
 			li.classList.add("list-group-item-action");
 			if (completed) {
