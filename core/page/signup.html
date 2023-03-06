@@ -16,6 +16,12 @@
 			defer
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
 		></script>
+		<!-- Custom JS -->
+		<script
+			defer
+			type="module"
+			src="/core/script/signup.js"
+		></script>
 	</head>
 	<body>
 		<div class="container">
@@ -33,71 +39,50 @@
 									style="max-width: 128px"
 								/>
 							</a>
-							<h3 class="card-title text-center">Login</h3>
-							<form id="login-form" action="/" method="post">
+							<h3 class="card-title text-center">Signup</h3>
+							<form id="signup-form" action="/" method="post">
 								<div class="mb-3">
-									<label for="email" class="form-label">Email address</label>
+									<label for="name">Name</label>
+									<input type="text" id="name" class="form-control" required />
+								</div>
+								<div class="mb-3">
+									<label for="email">Email</label>
 									<input
 										type="email"
-										class="form-control"
 										id="email"
-										name="email"
+										class="form-control"
 										required
 									/>
 								</div>
 								<div class="mb-3">
-									<label for="password" class="form-label">Password</label>
+									<label for="password">Password</label>
 									<input
 										type="password"
-										class="form-control"
 										id="password"
-										name="password"
+										class="form-control"
+										required
+									/>
+								</div>
+								<div class="mb-3">
+									<label for="confirm-password">Confirm Password</label>
+									<input
+										type="password"
+										id="confirm-password"
+										class="form-control"
 										required
 									/>
 								</div>
 								<button type="submit" class="btn btn-lg btn-primary w-100">
-									Login
+									Signup
 								</button>
 							</form>
-							<div class="text-center mt-3">
-								Not yet registered? <a href="/signup">Signup here</a>
+							<div class="text-center">
+								Already registered? <a href="/login">Login here</a>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- Custom JS -->
-		<script type="module">
-			const loginForm = document.querySelector('#login-form');
-			loginForm.addEventListener(
-				"submit", async (event) => {
-					event.preventDefault();
-					const email = document.querySelector('#email').value;
-					const password = document.querySelector('#password').value;
-
-					const headers = {
-						"Content-Type": "application/json",
-					};
-
-					const body = JSON.stringify({
-						email: email,
-						password: password,
-					});
-
-					const response = await fetch(
-						"/api/auth/login", {
-							method: "POST",
-							headers: headers,
-							body: body,
-						}
-					);
-
-					if ( response.status >= 200 && response.status <= 226 ) {
-						window.location.replace('/lister');
-					}
-				}
-			);
-		</script>
 	</body>
 </html>
