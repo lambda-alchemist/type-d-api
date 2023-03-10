@@ -39,21 +39,16 @@ async function login(context: Oak.Context) {
 	const user = await Model.User.where("email", body.email).first();
 	if (!user) {
 		context.response.status = HTTP.Status.Unauthorized;
-		context.response.body = {
-			message: "Invalid email or password1"
-		};
+		context.response.body = { message: "Invalid email or password" };
 		return;
 	}
 	const { password } = await Model.User.where("email", body.email).select("password").first();
 	const password_match = await bcrypt.compare(body.password, password);
 	if (!password_match) {
 		context.response.status = HTTP.Status.Unauthorized;
-		context.response.body = {
-			message: "Invalid email or password2"
-		};
+		context.response.body = { message: "Invalid email or password" };
 		return;
 	}
-
 	const token = await JWT.create(
 		{
 			alg: "HS512",
@@ -65,12 +60,9 @@ async function login(context: Oak.Context) {
 		},
 		Utility.crypto_key
 	);
-
 	context.cookies.set("jwt", token);
 	context.response.status = HTTP.Status.OK;
-	context.response.body = {
-		message: "Successfully logged in"
-	};
+	context.response.body = { message: "Successfully logged in" };
 }
 
 export {
